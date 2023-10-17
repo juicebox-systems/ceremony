@@ -54,7 +54,7 @@ impl<'a> Process<'a> {
 ///
 /// These respect dry runs.
 impl Context {
-    pub fn exec(&self, process: Process) -> Result<(), Error> {
+    pub(crate) fn exec(&self, process: Process) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not running because --dry-run:");
         }
@@ -87,7 +87,7 @@ impl Context {
         Ok(())
     }
 
-    pub fn exec_ok(&self, process: Process) -> Result<bool, Error> {
+    pub(crate) fn exec_ok(&self, process: Process) -> Result<bool, Error> {
         if self.common_args.dry_run {
             println!("Not running because --dry-run:");
         }

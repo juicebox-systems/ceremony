@@ -63,7 +63,7 @@ pub fn print_bip39_mnemonic(mnemonic: &[&'static str]) {
 }
 
 impl Context {
-    pub fn check_file_digest<'a>(
+    pub(crate) fn check_file_digest<'a>(
         &self,
         file: &'a str,
         expected: &Sha256Sum,
@@ -91,7 +91,7 @@ impl Context {
         Ok(file)
     }
 
-    pub fn file_digest(&self, file: &str) -> Result<Sha256Sum, Error> {
+    pub(crate) fn file_digest(&self, file: &str) -> Result<Sha256Sum, Error> {
         if self.common_args.dry_run {
             println!("Not computing file digest for {file:?} because --dry-run");
             Ok(Sha256Sum::DUMMY)
@@ -101,7 +101,7 @@ impl Context {
         }
     }
 
-    pub fn print_file_digest(&self, file: &str) -> Result<(), Error> {
+    pub(crate) fn print_file_digest(&self, file: &str) -> Result<(), Error> {
         let digest = self.file_digest(file)?;
         println!("File {file:?}");
         println!("SHA-256: {digest}");

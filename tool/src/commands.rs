@@ -2,17 +2,17 @@
 
 use clap::{self, command, Subcommand};
 
-mod bip39;
+pub mod bip39;
 pub mod build;
-mod computer;
-mod feature;
-mod firmware;
-mod hsm;
-mod meta;
-mod realm;
-mod realm_dvd;
-mod sign;
-mod smartcard;
+pub mod computer;
+pub mod feature;
+pub mod firmware;
+pub mod hsm;
+pub mod meta;
+pub mod realm;
+pub mod realm_dvd;
+pub mod sign;
+pub mod smartcard;
 pub mod vendor;
 
 use super::{Context, Error};

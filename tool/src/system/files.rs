@@ -16,7 +16,7 @@ use crate::Error;
 /// as root.
 #[repr(u32)]
 #[derive(Clone, Copy)]
-#[allow(clippy::upper_case_acronyms)]
+#[allow(unused, clippy::upper_case_acronyms)]
 pub enum FileMode {
     /// Read-only (`0o444`).
     R = file_modes::R,
@@ -54,7 +54,7 @@ pub struct DirEntry {
 /// `std::fs`.
 impl Context {
     /// Returns the given path for dry runs or only if the file is readable.
-    pub fn check_file_readable<'a>(&self, path: &'a str) -> Result<&'a str, Error> {
+    pub(crate) fn check_file_readable<'a>(&self, path: &'a str) -> Result<&'a str, Error> {
         if self.common_args.dry_run {
             println!("Not checking if {path:?} file is readable because --dry-run");
         } else {
@@ -67,7 +67,7 @@ impl Context {
         Ok(path)
     }
 
-    pub fn create_dir_all(&self, path: &str) -> Result<(), Error> {
+    pub(crate) fn create_dir_all(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not creating {path:?} dir and its parents because --dry-run");
             Ok(())
@@ -80,8 +80,12 @@ impl Context {
         }
     }
 
-    /// See [FileMode] for mode.
-    pub fn create_file(&self, path: &str, contents: &[u8], mode: FileMode) -> Result<(), Error> {
+    pub(crate) fn create_file(
+        &self,
+        path: &str,
+        contents: &[u8],
+        mode: FileMode,
+    ) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not creating {path:?} file with mode {mode:?} because --dry-run");
             Ok(())
@@ -99,7 +103,7 @@ impl Context {
     }
 
     /// Returns empty data for dry runs.
-    pub fn list_dir(&self, path: &str) -> Result<Vec<DirEntry>, Error> {
+    pub(crate) fn list_dir(&self, path: &str) -> Result<Vec<DirEntry>, Error> {
         if self.common_args.dry_run {
             println!("Not listing {path:?} dir because --dry-run");
             return Ok(Vec::new());
@@ -131,7 +135,7 @@ impl Context {
     }
 
     /// Returns empty data for dry runs.
-    pub fn read(&self, path: &str) -> Result<Vec<u8>, Error> {
+    pub(crate) fn read(&self, path: &str) -> Result<Vec<u8>, Error> {
         if self.common_args.dry_run {
             println!("Not reading {path:?} file because --dry-run");
             Ok(Vec::new())
@@ -140,7 +144,7 @@ impl Context {
         }
     }
 
-    pub fn remove_dir_only(&self, path: &str) -> Result<(), Error> {
+    pub(crate) fn remove_dir_only(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not removing {path:?} because --dry-run");
         } else {
@@ -159,7 +163,7 @@ impl Context {
         Ok(())
     }
 
-    pub fn remove_file(&self, path: &str) -> Result<(), Error> {
+    pub(crate) fn remove_file(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not removing {path:?} because --dry-run");
         } else {

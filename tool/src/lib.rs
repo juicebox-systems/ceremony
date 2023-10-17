@@ -8,7 +8,7 @@ mod paths;
 mod system;
 
 use digests::Sha256Sum;
-use errors::Error;
+pub use errors::Error;
 pub use paths::Paths;
 use paths::{join_path, join_paths};
 use system::Process;
@@ -29,13 +29,13 @@ pub struct Args {
 pub struct CommonArgs {
     /// Don't execute commands but display them unambiguously.
     #[arg(long, global(true))]
-    dry_run: bool,
+    pub dry_run: bool,
 }
 
 /// There is one `Context` per invocation of this program. Commands use this to
 /// access global state and call methods that need global state.
 ///
-/// Note: the [`digests`] and [`system`] modules also add impls to Context.
+// Note: the `digests` and `system` modules also add impls to Context.
 pub struct Context {
     pub common_args: CommonArgs,
     pub paths: &'static Paths,

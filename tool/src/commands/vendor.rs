@@ -88,7 +88,7 @@ impl Disc {
         join_path(&context.paths.vendor_iso_dir, &self.iso_name())
     }
 
-    pub fn iso_zip_name(&self) -> &'static str {
+    pub(crate) fn iso_zip_name(&self) -> &'static str {
         match self {
             Self::Codesafe => "CODESAFE.ZIP",
             Self::Firmware => "FIRMWARE.ZIP",
@@ -96,7 +96,7 @@ impl Disc {
         }
     }
 
-    pub fn iso_zip_hash(&self) -> Sha256Sum {
+    pub(crate) fn iso_zip_hash(&self) -> Sha256Sum {
         Sha256Sum::from_hex(match self {
             Self::Codesafe => "7d6eaff0548d90143d35834f1ea1cf092321e9003e10e14895a01a6f412adadb",
             Self::Firmware => "035dd8b9841d965c8f048c357ab25e1bf7c11afaa5d616482f1b2a1f8590fdc8",
@@ -109,7 +109,7 @@ impl Disc {
         self.mount_path_with_parent(&context.paths.vendor_iso_mount_parent)
     }
 
-    pub fn mount_path_with_parent(&self, run_dir: &str) -> String {
+    pub(crate) fn mount_path_with_parent(&self, run_dir: &str) -> String {
         join_path(run_dir, self.long_name())
     }
 }

@@ -29,10 +29,10 @@ jobs:
         working-directory: tool
 
     steps:
-    - run: pwd
-
     - name: Check out sources
       uses: actions/checkout@v2
+
+    - run: pwd
 
     - name: Install Rust
       uses: actions-rs/toolchain@v1

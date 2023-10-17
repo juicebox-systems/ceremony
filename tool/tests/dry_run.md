@@ -523,12 +523,12 @@ Paths {
     mount_dir: "/run/dvd",
     nfast_dir: "/opt/nfast",
     nfast_bin: "/opt/nfast/bin",
+    realm_iso: "/home/ceremony-test/realm.iso",
     signing_dir: "/home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release",
     vendor_iso_dir: "/home/ceremony-test",
     vendor_iso_mount_parent: "/run/ceremony",
     vendor_iso_zip_dir: "/run/win/Users/defaultuser0",
     world_dir: "/opt/nfast/kmdata/local",
-    world_iso: "/home/ceremony-test/secworld.iso",
 }
 ```
 
@@ -648,7 +648,7 @@ Args {
     },
     command: RealmDvd(
         CreateIso {
-            output: "/home/ceremony-test/secworld.iso",
+            output: "/home/ceremony-test/realm.iso",
         },
     ),
 }
@@ -660,7 +660,7 @@ Not checking if "/opt/nfast/kmdata/local/world" file is readable because --dry-r
 Not checking if "/home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/entrust_hsm.sar" file is readable because --dry-run
 Not checking if "/home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/userdata.sar" file is readable because --dry-run
 Not checking if "/home/ceremony-test/juicebox-hsm-realm/target/release/entrust_init" file is readable because --dry-run
-Not removing "/home/ceremony-test/secworld.iso" because --dry-run
+Not removing "/home/ceremony-test/realm.iso" because --dry-run
 Not running because --dry-run:
 Spawning Process {
     program: "xorriso",
@@ -670,7 +670,7 @@ Spawning Process {
         "-indev",
         "stdio:/dev/null",
         "-outdev",
-        "/home/ceremony-test/secworld.iso",
+        "/home/ceremony-test/realm.iso",
         "-charset",
         "ISO-8859-1",
         "-compliance",
@@ -1032,12 +1032,12 @@ Args {
     },
     command: RealmDvd(
         Write {
-            iso: "/home/ceremony-test/secworld.iso",
+            iso: "/home/ceremony-test/realm.iso",
         },
     ),
 }
 
-Not checking if "/home/ceremony-test/secworld.iso" file is readable because --dry-run
+Not checking if "/home/ceremony-test/realm.iso" file is readable because --dry-run
 Not running because --dry-run:
 Spawning Process {
     program: "xorriso",
@@ -1048,7 +1048,7 @@ Spawning Process {
         "-eject",
         "-sao",
         "dev=/dev/sr0",
-        "/home/ceremony-test/secworld.iso",
+        "/home/ceremony-test/realm.iso",
     ],
     dir: None,
 }

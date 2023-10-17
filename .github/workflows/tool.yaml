@@ -67,6 +67,9 @@ jobs:
         args: --manifest-path tool/Cargo.toml --tests -- -D warnings
         command: clippy
 
+    - name: Run realm DVD test
+      run: ./tests/realm_dvd.sh
+
     - name: Install cargo audit
       uses: actions-rs/cargo@v1
       with:

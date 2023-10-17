@@ -40,7 +40,7 @@ impl<'a> Process<'a> {
         self
     }
 
-    fn into_command(self) -> process::Command {
+    fn command(&self) -> process::Command {
         let mut command = process::Command::new(self.program);
         command.args(self.args);
         if let Some(dir) = self.dir {
@@ -71,7 +71,7 @@ impl Context {
             let start = SystemTime::now();
 
             process
-                .into_command()
+                .command()
                 .status()
                 .map_err(Error::from)
                 .and_then(|status| {
@@ -80,7 +80,8 @@ impl Context {
                     } else {
                         Err(Error::new("non-zero exit status (or signal)"))
                     }
-                })?;
+                })
+                .map_err(|err| Error::new(format!("failed to run {process:?}: {err}")))?;
 
             println!(
                 "time elapsed: {:0.01} seconds",
@@ -111,11 +112,11 @@ impl Context {
         if self.common_args.dry_run {
             Ok(true)
         } else {
-            process
-                .into_command()
+            let status = process
+                .command()
                 .status()
-                .map_err(Error::from)
-                .map(|status| status.success())
+                .map_err(|err| Error::new(format!("failed to run {process:?}: {err}")))?;
+            Ok(status.success())
         }
     }
 }

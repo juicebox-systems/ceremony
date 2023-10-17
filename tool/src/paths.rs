@@ -51,6 +51,10 @@ pub struct Paths {
     /// `/opt/nfast/bin`.
     pub nfast_bin: String,
 
+    /// The path to the ISO file that is created when preparing to burn the
+    /// realm DVD. This file may not exist yet.
+    pub realm_iso: String,
+
     /// The path to the directory containing the signed archive files (SAR
     /// files), as well as the unsigned ELF and userdata input files. The
     /// directory and files may not exist yet.
@@ -71,10 +75,6 @@ pub struct Paths {
     /// The path to the directory containing key blobs and other files related
     /// to the current Security World: `/opt/nfast/kmdata/local`.
     pub world_dir: String,
-
-    /// The path to the ISO file that is created when preparing to burn the
-    /// realm DVD. This file may not exist yet.
-    pub world_iso: String,
 }
 
 impl Paths {
@@ -99,6 +99,7 @@ impl Paths {
                 mount_dir: String::from("/run/dvd"),
                 nfast_bin: join_path(&nfast_dir, "bin"),
                 nfast_dir: nfast_dir.clone(),
+                realm_iso: join_path(&home, "realm.iso"),
                 signing_dir: join_path(
                     &juicebox_hsm_realm_dir,
                     "target/powerpc-unknown-linux-gnu/release",
@@ -107,7 +108,6 @@ impl Paths {
                 vendor_iso_mount_parent,
                 vendor_iso_zip_dir: String::from("/run/win/Users/defaultuser0"),
                 world_dir: join_path(&nfast_dir, "kmdata/local"),
-                world_iso: join_path(&home, "secworld.iso"),
             }
         })
     }

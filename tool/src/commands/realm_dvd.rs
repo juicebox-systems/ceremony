@@ -81,7 +81,7 @@ pub enum Command {
         #[clap(
             long,
             value_name = "FILE",
-            default_value_t = Paths::get().world_iso.clone()
+            default_value_t = Paths::get().realm_iso.clone()
         )]
         output: String,
     },
@@ -111,7 +111,7 @@ pub enum Command {
         #[clap(
             long,
             value_name = "FILE",
-            default_value_t = Paths::get().world_iso.clone()
+            default_value_t = Paths::get().realm_iso.clone()
         )]
         iso: String,
     },

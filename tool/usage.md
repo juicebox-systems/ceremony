@@ -537,7 +537,7 @@ Usage: ceremony realm-dvd create-iso [OPTIONS]
 
 Options:
       --dry-run        Don't execute commands but display them unambiguously
-      --output <FILE>  [default: /home/ceremony-test/secworld.iso]
+      --output <FILE>  [default: /home/ceremony-test/realm.iso]
   -h, --help           Print help
 ```
 
@@ -608,7 +608,7 @@ Usage: ceremony realm-dvd write [OPTIONS]
 
 Options:
       --dry-run     Don't execute commands but display them unambiguously
-      --iso <FILE>  [default: /home/ceremony-test/secworld.iso]
+      --iso <FILE>  [default: /home/ceremony-test/realm.iso]
   -h, --help        Print help
 ```
 

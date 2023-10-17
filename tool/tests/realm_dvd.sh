@@ -17,10 +17,8 @@ mkdir -p target/realm_dvd
 
 # privileged to be able to mount the ISO
 docker run \
-    --interactive \
     --privileged \
     --rm \
-    --tty \
     --volume $cwd/target/debug/ceremony:/usr/local/bin/ceremony:ro \
     --volume $cwd/target/realm_dvd:/output/ \
     --volume $cwd/tests/realm_dvd_inner.sh:/usr/local/bin/realm_dvd_inner.sh:ro \

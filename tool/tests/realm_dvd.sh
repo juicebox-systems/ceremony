@@ -19,9 +19,9 @@ mkdir -p target/realm_dvd
 docker run \
     --privileged \
     --rm \
-    --volume $cwd/target/debug/ceremony:/usr/local/bin/ceremony:ro \
-    --volume $cwd/target/realm_dvd:/output/ \
-    --volume $cwd/tests/realm_dvd_inner.sh:/usr/local/bin/realm_dvd_inner.sh:ro \
+    --volume "$cwd/target/debug/ceremony:/usr/local/bin/ceremony:ro" \
+    --volume "$cwd/target/realm_dvd:/output/" \
+    --volume "$cwd/tests/realm_dvd_inner.sh:/usr/local/bin/realm_dvd_inner.sh:ro" \
     debian:12 \
     realm_dvd_inner.sh
 

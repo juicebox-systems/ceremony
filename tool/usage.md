@@ -23,11 +23,8 @@ Commands:
   help       Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony bip39
@@ -77,15 +74,11 @@ Encode data as a BIP-39 mnemonic phrase
 Usage: ceremony bip39 encode [OPTIONS] <HEX>
 
 Arguments:
-  <HEX>
-          32-64 hex characters of input data
+  <HEX>  32-64 hex characters of input data
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony build
@@ -123,11 +116,8 @@ Commands:
   help      Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony computer shutdown
@@ -138,11 +128,8 @@ Shut down the host computer gracefully
 Usage: ceremony computer shutdown [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony feature
@@ -196,11 +183,8 @@ Print which features have been activated on this HSM
 Usage: ceremony feature info [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony firmware
@@ -216,11 +200,8 @@ Commands:
   help       Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony firmware file-info
@@ -231,17 +212,11 @@ Print information about an HSM firmware file
 Usage: ceremony firmware file-info [OPTIONS] [FILE]
 
 Arguments:
-  [FILE]
-          A binary NFF file for this particular HSM model
-          
-          [default: /run/ceremony/nShield_HSM_Firmware-13.4.4/firmware/SoloXC/latest/soloxc-13-3-1-vsn37.nff]
+  [FILE]  A binary NFF file for this particular HSM model [default: /run/ceremony/nShield_HSM_Firmware-13.4.4/firmware/SoloXC/latest/soloxc-13-3-1-vsn37.nff]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony firmware write
@@ -284,11 +259,8 @@ Commands:
   help          Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony hsm create-world
@@ -394,11 +366,8 @@ Print information about the HSM's current Security World
 Usage: ceremony hsm world-info [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony meta
@@ -414,11 +383,8 @@ Commands:
   help   Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony meta hash
@@ -446,11 +412,8 @@ Print the paths of things on the filesystem, reflecting the current environment 
 Usage: ceremony meta paths [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ## ceremony realm
@@ -468,11 +431,8 @@ Commands:
   help               Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony realm create-nvram-file
@@ -520,11 +480,8 @@ Print the public key that clients will use to authenticate this realm
 Usage: ceremony realm noise-public-key [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony realm print-acl
@@ -567,11 +524,8 @@ Commands:
   help        Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony realm-dvd create-iso
@@ -582,14 +536,9 @@ Collect the files into a disc image file
 Usage: ceremony realm-dvd create-iso [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-      --output <FILE>
-          [default: /home/diego/secworld.iso]
-
-  -h, --help
-          Print help
+      --dry-run        Don't execute commands but display them unambiguously
+      --output <FILE>  [default: /home/ceremony-test/secworld.iso]
+  -h, --help           Print help
 ```
 
 ### ceremony realm-dvd mount
@@ -600,11 +549,8 @@ Mount the DVD onto /run/dvd
 Usage: ceremony realm-dvd mount [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony realm-dvd restore
@@ -632,11 +578,8 @@ Unmount the DVD
 Usage: ceremony realm-dvd unmount [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony realm-dvd verify
@@ -664,14 +607,9 @@ Burn an ISO file to a DVD
 Usage: ceremony realm-dvd write [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-      --iso <FILE>
-          [default: /home/diego/secworld.iso]
-
-  -h, --help
-          Print help
+      --dry-run     Don't execute commands but display them unambiguously
+      --iso <FILE>  [default: /home/ceremony-test/secworld.iso]
+  -h, --help        Print help
 ```
 
 ## ceremony sign
@@ -689,11 +627,8 @@ Commands:
   help        Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony sign create-key
@@ -744,10 +679,10 @@ Options:
           Don't execute commands but display them unambiguously
 
       --input <FILE>
-          [default: /home/diego/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/entrust_hsm.elf]
+          [default: /home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/entrust_hsm.elf]
 
       --output <FILE>
-          [default: /home/diego/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/entrust_hsm.sar]
+          [default: /home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/entrust_hsm.sar]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -771,10 +706,10 @@ Options:
       --tempfile <FILE>
           The path where the string "dummy" will be written
           
-          [default: /home/diego/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/userdata.dummy]
+          [default: /home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/userdata.dummy]
 
       --output <FILE>
-          [default: /home/diego/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/userdata.sar]
+          [default: /home/ceremony-test/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/release/userdata.sar]
 
   -h, --help
           Print help (see a summary with '-h')
@@ -828,11 +763,8 @@ Print information about the currently attached smartcard
 Usage: ceremony smartcard info [OPTIONS]
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony smartcard write-ocs
@@ -866,11 +798,8 @@ Commands:
   help     Print this message or the help of the given subcommand(s)
 
 Options:
-      --dry-run
-          Don't execute commands but display them unambiguously
-
-  -h, --help
-          Print help
+      --dry-run  Don't execute commands but display them unambiguously
+  -h, --help     Print help
 ```
 
 ### ceremony vendor install

@@ -1,5 +1,6 @@
 use std::fmt::Write as _;
 use std::fs;
+use std::io;
 use std::io::Write as _;
 use std::process::{self, Stdio};
 
@@ -162,7 +163,13 @@ fn dry_run() -> String {
 fn test_dry_run() {
     let expected = fs::read_to_string("tests/dry_run.md").unwrap();
     let actual = dry_run();
-    if expected != actual {
+    if expected == actual {
+        if let Err(err) = fs::remove_file("tests/dry_run.actual.md") {
+            if err.kind() != io::ErrorKind::NotFound {
+                panic!("failed to delete `tests/dry_run.actual.md`: {err}");
+            }
+        }
+    } else {
         fs::write("tests/dry_run.actual.md", &actual).unwrap();
         panic!("dry run output differs: compare expected (`tests/dry_run.md`) with actual (`tests/dry_run.actual.md`)");
     }

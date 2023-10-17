@@ -24,6 +24,10 @@ jobs:
   main:
     name: Build + Test
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: tool
+
     steps:
     - name: Check out sources
       uses: actions/checkout@v2

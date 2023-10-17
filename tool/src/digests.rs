@@ -62,7 +62,16 @@ pub fn print_bip39_mnemonic(mnemonic: &[&'static str]) {
     writeln!(out).unwrap();
 }
 
+/// Methods to calculate and check file digests.
+///
+/// These respect dry runs.
 impl Context {
+    /// Returns the given path if its contents match the expected hash, or
+    /// returns an error otherwise.
+    ///
+    /// Prints the hash and the BIP-39 mnemonic.
+    ///
+    /// For dry runs, prints the expected hash and claims success.
     pub(crate) fn check_file_digest<'a>(
         &self,
         file: &'a str,
@@ -91,6 +100,10 @@ impl Context {
         Ok(file)
     }
 
+    /// Returns the SHA-256 hash of the file at the given path, or returns an
+    /// I/O error.
+    ///
+    /// For dry runs, returns [`Sha256Sum::DUMMY`].
     pub(crate) fn file_digest(&self, file: &str) -> Result<Sha256Sum, Error> {
         if self.common_args.dry_run {
             println!("Not computing file digest for {file:?} because --dry-run");
@@ -101,6 +114,10 @@ impl Context {
         }
     }
 
+    /// Prints the path, SHA-256 hash, and BIP-39 mnemonic of the file, or
+    /// returns an I/O error.
+    ///
+    /// For dry runs, prints [`Sha256Sum::DUMMY`].
     pub(crate) fn print_file_digest(&self, file: &str) -> Result<(), Error> {
         let digest = self.file_digest(file)?;
         println!("File {file:?}");

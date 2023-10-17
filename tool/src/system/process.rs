@@ -54,6 +54,13 @@ impl<'a> Process<'a> {
 ///
 /// These respect dry runs.
 impl Context {
+    /// Runs the given command and waits for it to complete.
+    ///
+    /// Returns an error if the command does not exit with a 0 status.
+    ///
+    /// The child stdin, stdout, and stderr are inherited.
+    ///
+    /// For dry runs, the command is not executed.
     pub(crate) fn exec(&self, process: Process) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not running because --dry-run:");
@@ -87,6 +94,14 @@ impl Context {
         Ok(())
     }
 
+    /// Runs the given command and waits for it to complete.
+    ///
+    /// Returns true if the command exited with a 0 status, false if it exited
+    /// with a non-zero status, or an error otherwise.
+    ///
+    /// The child stdin, stdout, and stderr are inherited.
+    ///
+    /// For dry runs, the command is not executed and `Ok(true)` is returned.
     pub(crate) fn exec_ok(&self, process: Process) -> Result<bool, Error> {
         if self.common_args.dry_run {
             println!("Not running because --dry-run:");

@@ -51,9 +51,12 @@ pub struct DirEntry {
 /// File operations.
 ///
 /// These respect dry runs and generally give better error messages than
-/// `std::fs`.
+/// [`std::fs`].
 impl Context {
-    /// Returns the given path for dry runs or only if the file is readable.
+    /// Returns the given path if the file is readable, or an I/O error
+    /// otherwise.
+    ///
+    /// For dry runs, always returns the given path.
     pub(crate) fn check_file_readable<'a>(&self, path: &'a str) -> Result<&'a str, Error> {
         if self.common_args.dry_run {
             println!("Not checking if {path:?} file is readable because --dry-run");
@@ -67,6 +70,9 @@ impl Context {
         Ok(path)
     }
 
+    /// Creates the directory `path` and any ancestors.
+    ///
+    /// It is not an error if `path` or its ancestors already exist.
     pub(crate) fn create_dir_all(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not creating {path:?} dir and its parents because --dry-run");
@@ -80,6 +86,9 @@ impl Context {
         }
     }
 
+    /// Creates a file at `path` with the given `contents` and `mode`.
+    ///
+    /// The parent directory must already exist.
     pub(crate) fn create_file(
         &self,
         path: &str,
@@ -102,7 +111,11 @@ impl Context {
         }
     }
 
-    /// Returns empty data for dry runs.
+    /// Returns the entries within an existing directory, sorted by filename.
+    ///
+    /// Returns an error if any of the filenames contain invalid UTF-8.
+    ///
+    /// For dry runs, returns an empty result.
     pub(crate) fn list_dir(&self, path: &str) -> Result<Vec<DirEntry>, Error> {
         if self.common_args.dry_run {
             println!("Not listing {path:?} dir because --dry-run");
@@ -134,7 +147,9 @@ impl Context {
         Ok(entries)
     }
 
-    /// Returns empty data for dry runs.
+    /// Returns the contents of the given file.
+    ///
+    /// For dry runs, returns an empty result.
     pub(crate) fn read(&self, path: &str) -> Result<Vec<u8>, Error> {
         if self.common_args.dry_run {
             println!("Not reading {path:?} file because --dry-run");
@@ -144,6 +159,10 @@ impl Context {
         }
     }
 
+    /// Removes a directory, which must be empty.
+    ///
+    /// It is not an error if the directory or one of its ancestors does not
+    /// exist.
     pub(crate) fn remove_dir_only(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not removing {path:?} because --dry-run");
@@ -163,6 +182,9 @@ impl Context {
         Ok(())
     }
 
+    /// Removes a file.
+    ///
+    /// It is not an error if the file or one of its ancestors does not exist.
     pub(crate) fn remove_file(&self, path: &str) -> Result<(), Error> {
         if self.common_args.dry_run {
             println!("Not removing {path:?} because --dry-run");

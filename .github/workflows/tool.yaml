@@ -76,5 +76,5 @@ jobs:
     - name: Run cargo audit
       uses: actions-rs/cargo@v1
       with:
-        args: --manifest-path tool/Cargo.toml
+        args: --file tool/Cargo.lock
         command: audit

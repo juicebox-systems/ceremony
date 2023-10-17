@@ -29,6 +29,9 @@ jobs:
         working-directory: tool
 
     steps:
+    - run: pwd
+
+    steps:
     - name: Check out sources
       uses: actions/checkout@v2
 

@@ -54,6 +54,8 @@ pub fn run(command: &Command, context: &Context) -> Result<(), Error> {
                 "1/1",
                 "--no-persist",
                 "--no-pp-recovery",
+                "--timeout",
+                "0",
             ],
         )),
     }

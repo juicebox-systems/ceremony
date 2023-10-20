@@ -1,0 +1,86 @@
+# This is based on the juicebox-hsm-realm workflow, which is in turn based on
+# <https://github.com/ongardie/cubicle/blob/b307fe9/.github/workflows/main.yaml>
+# with Diego's permission. The initial workflow YAML skeleton before that was
+# based on
+# <https://github.com/actions-rs/example/blob/master/.github/workflows/quickstart.yml>
+# and
+# <https://github.com/ramosbugs/oauth2-rs/blob/main/.github/workflows/main.yml>.
+#
+# GitHub Actions workflow syntax documentation is here:
+# <https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions>.
+name: Tool CI
+
+on:
+  pull_request: {}
+  push:
+    branches:
+    - main
+  workflow_dispatch: {}
+
+env:
+  INSTALL_RUST_VERSION: "1.73"
+
+jobs:
+  main:
+    name: Build + Test
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        # Note: does not apply to actions-rs actions.
+        working-directory: tool
+
+    steps:
+    - name: Check out sources
+      uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        components: rustfmt, clippy
+        default: true
+        profile: minimal
+        toolchain: ${{ env.INSTALL_RUST_VERSION }}
+
+    - name: Run cargo build
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --manifest-path tool/Cargo.toml
+
+    - name: Run cargo test
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --manifest-path tool/Cargo.toml
+      env:
+        RUST_BACKTRACE: '1'
+
+    - name: Run cargo fmt
+      uses: actions-rs/cargo@v1
+      with:
+        args: --manifest-path tool/Cargo.toml --all -- --check
+        command: fmt
+
+    - name: Run clippy
+      uses: actions-rs/cargo@v1
+      with:
+        args: --manifest-path tool/Cargo.toml --tests -- -D warnings
+        command: clippy
+
+    - name: Run shellcheck on scripts
+      run: shellcheck tests/realm_dvd.sh tests/realm_dvd_inner.sh
+
+    - name: Run realm DVD test
+      run: ./tests/realm_dvd.sh
+
+    - name: Install cargo audit
+      uses: actions-rs/cargo@v1
+      with:
+        args: cargo-audit
+        command: install
+
+    - name: Run cargo audit
+      uses: actions-rs/cargo@v1
+      with:
+        args: --file tool/Cargo.lock
+        command: audit

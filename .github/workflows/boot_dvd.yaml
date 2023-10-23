@@ -104,7 +104,7 @@ jobs:
         path: |
           boot_dvd/inputs/crates/
           boot_dvd/inputs/juicebox-hsm-realm.tar
-        key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
+        key: ${{ steps.restore-code-cache.outputs.cache-primary-key }}
 
     - name: Check all inputs
       run: |

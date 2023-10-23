@@ -21,7 +21,6 @@ docker run \
     --init \
     --interactive \
     --rm \
-    --tty \
     --volume "$cwd:/ceremony:ro" \
     --volume "$cwd/inputs/crates:/ceremony/inputs/crates" \
     --volume "$cwd/target/crates:/ceremony/target/crates" \

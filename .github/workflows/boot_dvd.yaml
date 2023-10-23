@@ -27,7 +27,8 @@ jobs:
     - name: Split inputs hashes
       run: |
         grep -E '  \./inputs/apt/' sha256sum.inputs.txt > sha256sum.inputs-apt.txt
-        grep -E '  \./inputs/(ceremony-tool.tar$|crates/|juicebox-hsm-realm.tar$)' sha256sum.inputs.txt > sha256sum.inputs-code.txt
+        grep -E '  \./inputs/(crates/|juicebox-hsm-realm\.tar$)' sha256sum.inputs.txt > sha256sum.inputs-code.txt
+        grep -E '  \./inputs/rust-.*\.tar\.xz$' sha256sum.inputs.txt > sha256sum.inputs-rust.txt
 
     - name: Restore apt cache
       uses: actions/cache/restore@v3
@@ -53,3 +54,52 @@ jobs:
       with:
         path: boot_dvd/inputs/apt
         key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
+
+    - name: Download Rust
+      run: ./get-rust.sh
+
+    - name: Check Rust downloads
+      run: |
+        sha256sum ./inputs/rust-*-linux-*.tar.xz ./inputs/rust-src-*.tar.xz | \
+          diff -u sha256sum.inputs-rust.txt -
+
+    - name: Restore code/crates cache
+      uses: actions/cache/restore@v3
+      id: restore-code-cache
+      with:
+        path: |
+          boot_dvd/inputs/crates/
+          boot_dvd/inputs/juicebox-hsm-realm.tar
+        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-code.txt', 'boot_dvd/get-code.sh', 'boot_dvd/get-crates.sh', 'boot_dvd/internal/*.sh') }}
+
+    - name: Package/download code
+      # This is done unconditionally since it's fast. It doesn't download
+      # anything if 'inputs/juicebox-hsm-realm.tar' exists.
+      run: ./get-code.sh
+
+    - name: Download crates
+      if: steps.restore-code-cache.outputs.cache-hit != 'true'
+      run: ./get-crates.sh
+
+    - name: Check code/crates cache
+      run: |
+        find ./inputs/crates ./inputs/juicebox-hsm-realm.tar -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs-code.txt -
+
+    - name: Save code/crates cache
+      if: steps.restore-code-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          boot_dvd/inputs/crates/
+          boot_dvd/inputs/juicebox-hsm-realm.tar
+        key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
+
+    - name: Check all inputs
+      run: |
+        find ./inputs -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs.txt -

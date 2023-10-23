@@ -42,7 +42,7 @@ else
     # https://stackoverflow.com/questions/31278902/how-to-shallow-clone-a-specific-commit-with-depth-1
     mkdir juicebox-hsm-realm
     cd juicebox-hsm-realm
-    git init
+    git init --initial-branch=main
     # TODO: replace with anonymous https://github.com/juicebox-systems/juicebox-hsm-realm.git
     git remote add origin git@github.com:juicebox-systems/juicebox-hsm-realm.git
     git fetch --depth 1 origin '0cf915f84dd376e8ec024779e8c0c31197bdec28'

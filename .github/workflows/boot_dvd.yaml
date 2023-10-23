@@ -31,10 +31,10 @@ jobs:
 
     - name: Restore apt cache
       uses: actions/cache/restore@v3
-        id: restore-apt-cache
-        with:
-          path: boot_dvd/inputs/apt
-          key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-apt.txt', 'boot_dvd/get-debs.sh', 'boot_dvd/internal/make-cache-dir.sh') }}
+      id: restore-apt-cache
+      with:
+        path: boot_dvd/inputs/apt
+        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-apt.txt', 'boot_dvd/get-debs.sh', 'boot_dvd/internal/make-cache-dir.sh') }}
 
     - name: Download apt files
       if: steps.restore-apt-cache.outputs.cache-hit != 'true'
@@ -50,6 +50,6 @@ jobs:
     - name: Save apt cache
       if: steps.restore-apt-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
-        with:
-          path: boot_dvd/inputs/apt
-          key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
+      with:
+        path: boot_dvd/inputs/apt
+        key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}

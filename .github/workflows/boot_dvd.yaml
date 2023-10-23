@@ -24,6 +24,7 @@ jobs:
     - name: Set up Git
       run: |
         # Configures the global `git` CLI to be able to access private repos.
+        git config --global url.'https://github.com/'.insteadOf 'git@github.com:'
         git config --global url.'https://github.com/'.insteadOf 'ssh://git@github.com/'
         # Copy the encoded auth token from local config that actions/checkout configured.
         git config --global http.'https://github.com/'.extraHeader "$(git config --local http.'https://github.com/'.extraHeader)"

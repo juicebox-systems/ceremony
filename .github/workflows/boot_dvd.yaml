@@ -1,0 +1,55 @@
+name: Boot DVD CI
+
+on:
+  pull_request: {}
+  push:
+    branches:
+    - main
+  workflow_dispatch: {}
+
+jobs:
+  main:
+    name: Build
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: boot_dvd
+
+    steps:
+    - name: Check out sources
+      uses: actions/checkout@v2
+
+    - name: Run shellcheck
+      run: |
+        shellcheck --version
+        shellcheck *.sh internal/*.sh
+
+    - name: Split inputs hashes
+      run: |
+        grep -E '  \./inputs/apt/' sha256sum.inputs.txt > sha256sum.inputs-apt.txt
+        grep -E '  \./inputs/(ceremony-tool.tar$|crates/|juicebox-hsm-realm.tar$)' sha256sum.inputs.txt > sha256sum.inputs-code.txt
+
+    - name: Restore apt cache
+      uses: actions/cache/restore@v3
+        id: restore-apt-cache
+        with:
+          path: boot_dvd/inputs/apt
+          key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-apt.txt', 'boot_dvd/get-debs.sh', 'boot_dvd/internal/make-cache-dir.sh') }}
+
+    - name: Download apt files
+      if: steps.restore-apt-cache.outputs.cache-hit != 'true'
+      run: ./get-debs.sh
+
+    - name: Check apt files
+      run: |
+        find ./inputs/apt -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs-apt.txt -
+
+    - name: Save apt cache
+      if: steps.restore-apt-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+        with:
+          path: boot_dvd/inputs/apt
+          key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}

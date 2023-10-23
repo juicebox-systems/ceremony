@@ -10,8 +10,7 @@ on:
 jobs:
   main:
     name: Build
-    runs-on:
-      labels: ubuntu-latest-m
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: boot_dvd

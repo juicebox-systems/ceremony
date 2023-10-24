@@ -31,7 +31,7 @@ docker run \
     --interactive \
     --rm \
     --volume "$cwd:/ceremony:ro" \
-    --volume "$cwd/${mock}inputs:/ceremony/inputs:ro" \
+    --volume "$cwd/inputs:/ceremony/inputs:ro" \
     --volume "$cwd/target:/ceremony/target" \
     debian:$DEBIAN_CODENAME \
     /ceremony/make-iso-inner.sh

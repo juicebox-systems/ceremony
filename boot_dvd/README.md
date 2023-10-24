@@ -103,7 +103,8 @@ xorriso \
     -as cdrecord \
     -v \
     -eject \
-    -sao dev=/dev/sr0 \
+    -sao \
+    dev=/dev/sr0 \
     target/live-build/ceremony-boot-amd64.iso
 ```
 

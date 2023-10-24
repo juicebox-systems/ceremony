@@ -34,7 +34,8 @@ fi
 echo "Looking for C:\Users\defaultuser0\filesystem.squashfs with hash $expected"
 
 mkdir /run/win
-# The /dev/sda path is used for QEMU testing.
+# The /dev/sda path is used for KVM/QEMU testing with a "pseudo-Windows"
+# filesystem image; see '../make-win.sh'.
 mount -t ntfs-3g -o ro /dev/nvme0n1p3 /run/win || \
     mount -t ntfs-3g -o ro /dev/sda /run/win || \
     true

@@ -75,11 +75,11 @@ writable disk), and the ceremony desktop has 12 GB of RAM.
 
 Other `kvm` options may be useful:
 
-- To use a filesystem image as a "pseudo-Windows" disk, add this after the
-  `-cdrom` option:
+- To use a filesystem image as a "pseudo-Windows" disk (see `make-win.sh`), add
+  this after the `-cdrom` option:
 
   ```
-  -drive file=target/pseudo-win.img -snapshot
+  -drive file=target/win/pseudo-win.img -snapshot
   ```
 
 - To trace the accesses to the block device(s), add:

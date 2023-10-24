@@ -80,7 +80,7 @@ jobs:
         path: |
           boot_dvd/inputs/crates/
           boot_dvd/inputs/juicebox-hsm-realm.tar
-        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-code.txt', 'boot_dvd/get-code.sh', 'boot_dvd/get-crates.sh', 'boot_dvd/internal/*.sh') }}
+        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-code.txt', 'boot_dvd/sha256sum.inputs-rust.txt', 'boot_dvd/get-code.sh', 'boot_dvd/get-crates.sh', 'boot_dvd/internal/*.sh') }}
 
     - name: Package/download code
       # This is done unconditionally since it's fast. It doesn't download

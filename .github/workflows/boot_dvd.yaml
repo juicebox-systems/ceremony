@@ -44,7 +44,11 @@ jobs:
       id: restore-apt-cache
       with:
         path: boot_dvd/inputs/apt
-        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-apt.txt', 'boot_dvd/get-debs.sh', 'boot_dvd/internal/make-cache-dir.sh') }}
+        key: ${{ runner.os }}-${{ hashFiles(
+            'boot_dvd/sha256sum.inputs-apt.txt',
+            'boot_dvd/get-debs.sh',
+            'boot_dvd/internal/make-cache-dir.sh',
+          ) }}
 
     - name: Download apt files
       # This is done unconditionally since it's fast. It doesn't download
@@ -80,7 +84,15 @@ jobs:
         path: |
           boot_dvd/inputs/crates/
           boot_dvd/inputs/juicebox-hsm-realm.tar
-        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.inputs-code.txt', 'boot_dvd/sha256sum.inputs-rust.txt', 'boot_dvd/get-code.sh', 'boot_dvd/get-crates.sh', 'boot_dvd/internal/*.sh') }}
+        key: ${{ runner.os }}-${{ hashFiles(
+            'boot_dvd/sha256sum.inputs-code.txt',
+            'boot_dvd/sha256sum.inputs-rust.txt',
+            'boot_dvd/get-code.sh',
+            'boot_dvd/get-crates.sh',
+            'boot_dvd/internal/get-crates-inner.sh',
+            'boot_dvd/internal/make-cache-dir.sh',
+            'boot_dvd/internal/vars.sh',
+          ) }}
 
     - name: Package/download code
       # This is done unconditionally since it's fast. It doesn't download

@@ -25,6 +25,11 @@ find ./${mock}inputs -type f -not -name CACHEDIR.TAG | \
     diff -u ${mock}sha256sum.inputs.txt -
 
 ../boot_dvd/internal/make-cache-dir.sh target
+
+# The 'inputs' directory needs to exist for the bind mount below to work in
+# mock mode.
+mkdir -p inputs
+
 rm -f target/vendor.iso
 
 docker run \

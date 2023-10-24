@@ -144,3 +144,22 @@ jobs:
       with:
         path: boot_dvd/target/live-build/ceremony-boot-amd64.iso
         key: ${{ steps.restore-code-cache.outputs.cache-primary-key }}
+
+    - name: Dockerize root filesystem
+      run: |
+        mkdir target/test-squashfs
+        cd target/test-squashfs
+        7z x ../live-build/ceremony-boot-amd64.iso live/filesystem.squashfs
+        sudo unsquashfs live/filesystem.squashfs
+        cd squashfs-root
+        sudo tar -c . | docker import - ceremony-root
+
+    - name: Run tool build and tests
+      run: |
+        docker run --interactive --rm ceremony-root sh -c \
+          'ceremony meta paths && cd /root/ceremony/tool && cargo test'
+
+    - name: Run juicebox-hsm-realm build and unit tests
+      run: |
+        docker run --interactive --rm ceremony-root sh -c \
+          'cd /root/juicebox-hsm-realm && cargo build && cargo test --lib'

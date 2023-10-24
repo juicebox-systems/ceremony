@@ -33,6 +33,9 @@ jobs:
         shellcheck --version
         shellcheck *.sh internal/*.sh
 
+    - name: Check entrust.ps1 hashes
+      run: ./check-entrust-ps1-hashes.sh
+
     - name: Split inputs hashes
       run: |
         grep -E '  \./inputs/apt/' sha256sum.inputs.txt > sha256sum.inputs-apt.txt

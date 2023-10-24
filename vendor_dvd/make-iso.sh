@@ -12,6 +12,7 @@ cwd=$(pwd)
 
 . ../boot_dvd/internal/vars.sh
 
+# Define USE_MOCK_INPUTS to build an ISO image from 'tests/inputs' instead.
 if [ -z "${USE_MOCK_INPUTS:-}" ]; then
     mock=
 else
@@ -31,7 +32,6 @@ docker run \
     --interactive \
     --rm \
     --volume "$cwd:/ceremony:ro" \
-    --volume "/does/not/exist:/ceremony/inputs:ro" \
     --volume "$cwd/${mock}inputs:/ceremony/inputs:ro" \
     --volume "$cwd/target:/ceremony/target" \
     debian:$DEBIAN_CODENAME \

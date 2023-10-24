@@ -25,9 +25,12 @@ jobs:
         shellcheck *.sh tests/*.sh ../boot_dvd/internal/vars.sh
 
     - name: Make ISO using mock inputs
-      run: ./make-iso.sh
-      env:
-        USE_MOCK_INPUTS: '1'
+      # We should be able to do `USE_MOCK_INPUTS=1 ./make-iso.sh`, but Docker
+      # fails with a read-only bind mount error.
+      run: |
+        rm -rf tests/inputs/
+        cp -av tests/inputs/ tests/sha256sum.input.txt tests/sha256sum.output.txt .
+        ./make-iso.sh
 
     - name: Check mock ISO
       run: ./tests/test-mock-iso.sh

@@ -47,7 +47,7 @@ jobs:
       id: restore-apt-cache
       with:
         path: boot-dvd/inputs/apt
-        key: ${{ runner.os }}-${{ hashFiles(
+        key: apt-${{ runner.os }}-${{ hashFiles(
             'boot-dvd/sha256sum.inputs-apt.txt',
             'boot-dvd/get-debs.sh',
             'boot-dvd/internal/make-cache-dir.sh'
@@ -87,7 +87,7 @@ jobs:
         path: |
           boot-dvd/inputs/crates/
           boot-dvd/inputs/juicebox-hsm-realm.tar
-        key: ${{ runner.os }}-${{ hashFiles(
+        key: code-${{ runner.os }}-${{ hashFiles(
             'boot-dvd/sha256sum.inputs-code.txt',
             'boot-dvd/sha256sum.inputs-rust.txt',
             'boot-dvd/get-code.sh',
@@ -135,7 +135,7 @@ jobs:
       id: restore-iso-cache
       with:
         path: boot-dvd/target/live-build/ceremony-boot-amd64.iso
-        key: ${{ runner.os }}-${{ hashFiles('boot-dvd/sha256sum.output.txt') }}
+        key: iso-${{ runner.os }}-${{ hashFiles('boot-dvd/sha256sum.output.txt') }}
 
     - name: Build ISO
       if: steps.restore-iso-cache.outputs.cache-hit != 'true'

@@ -29,7 +29,7 @@ sudo apt install xorriso
 Then run:
 
 ```sh
-../boot_dvd/burn.sh target/vendor.iso
+../boot-dvd/burn.sh target/vendor.iso
 ```
 
 Label the disc "Juicebox Ceremony Vendor DVD", along with the local date and

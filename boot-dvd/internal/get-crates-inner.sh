@@ -10,7 +10,7 @@
 
 set -eux
 
-# cd to the boot_dvd directory
+# cd to the boot-dvd directory
 cd -P -- "$(dirname -- "$0")"/..
 
 . ./internal/vars.sh

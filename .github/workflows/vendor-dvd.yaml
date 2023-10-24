@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: vendor_dvd
+        working-directory: vendor-dvd
 
     steps:
     - name: Check out sources
@@ -22,7 +22,7 @@ jobs:
     - name: Run shellcheck
       run: |
         shellcheck --version
-        shellcheck *.sh tests/*.sh ../boot_dvd/internal/vars.sh
+        shellcheck *.sh tests/*.sh ../boot-dvd/internal/vars.sh
 
     - name: Make ISO using mock inputs
       run: ./make-iso.sh

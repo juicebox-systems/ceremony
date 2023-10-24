@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
-        working-directory: boot_dvd
+        working-directory: boot-dvd
 
     steps:
     - name: Check out sources
@@ -46,11 +46,11 @@ jobs:
       uses: actions/cache/restore@v3
       id: restore-apt-cache
       with:
-        path: boot_dvd/inputs/apt
+        path: boot-dvd/inputs/apt
         key: ${{ runner.os }}-${{ hashFiles(
-            'boot_dvd/sha256sum.inputs-apt.txt',
-            'boot_dvd/get-debs.sh',
-            'boot_dvd/internal/make-cache-dir.sh'
+            'boot-dvd/sha256sum.inputs-apt.txt',
+            'boot-dvd/get-debs.sh',
+            'boot-dvd/internal/make-cache-dir.sh'
           ) }}
 
     - name: Download apt files
@@ -69,7 +69,7 @@ jobs:
       if: steps.restore-apt-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
-        path: boot_dvd/inputs/apt
+        path: boot-dvd/inputs/apt
         key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
 
     - name: Download Rust
@@ -85,16 +85,16 @@ jobs:
       id: restore-code-cache
       with:
         path: |
-          boot_dvd/inputs/crates/
-          boot_dvd/inputs/juicebox-hsm-realm.tar
+          boot-dvd/inputs/crates/
+          boot-dvd/inputs/juicebox-hsm-realm.tar
         key: ${{ runner.os }}-${{ hashFiles(
-            'boot_dvd/sha256sum.inputs-code.txt',
-            'boot_dvd/sha256sum.inputs-rust.txt',
-            'boot_dvd/get-code.sh',
-            'boot_dvd/get-crates.sh',
-            'boot_dvd/internal/get-crates-inner.sh',
-            'boot_dvd/internal/make-cache-dir.sh',
-            'boot_dvd/internal/vars.sh'
+            'boot-dvd/sha256sum.inputs-code.txt',
+            'boot-dvd/sha256sum.inputs-rust.txt',
+            'boot-dvd/get-code.sh',
+            'boot-dvd/get-crates.sh',
+            'boot-dvd/internal/get-crates-inner.sh',
+            'boot-dvd/internal/make-cache-dir.sh',
+            'boot-dvd/internal/vars.sh'
           ) }}
 
     - name: Package/download code
@@ -118,8 +118,8 @@ jobs:
       uses: actions/cache/save@v3
       with:
         path: |
-          boot_dvd/inputs/crates/
-          boot_dvd/inputs/juicebox-hsm-realm.tar
+          boot-dvd/inputs/crates/
+          boot-dvd/inputs/juicebox-hsm-realm.tar
         key: ${{ steps.restore-code-cache.outputs.cache-primary-key }}
 
     - name: Check all inputs
@@ -134,8 +134,8 @@ jobs:
       uses: actions/cache/restore@v3
       id: restore-iso-cache
       with:
-        path: boot_dvd/target/live-build/ceremony-boot-amd64.iso
-        key: ${{ runner.os }}-${{ hashFiles('boot_dvd/sha256sum.output.txt') }}
+        path: boot-dvd/target/live-build/ceremony-boot-amd64.iso
+        key: ${{ runner.os }}-${{ hashFiles('boot-dvd/sha256sum.output.txt') }}
 
     - name: Build ISO
       if: steps.restore-iso-cache.outputs.cache-hit != 'true'
@@ -145,7 +145,7 @@ jobs:
       if: steps.restore-iso-cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
-        path: boot_dvd/target/live-build/ceremony-boot-amd64.iso
+        path: boot-dvd/target/live-build/ceremony-boot-amd64.iso
         key: ${{ steps.restore-iso-cache.outputs.cache-primary-key }}
 
     - name: Dockerize root filesystem

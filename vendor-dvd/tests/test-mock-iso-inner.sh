@@ -6,7 +6,7 @@
 
 set -eux
 
-# cd to the vendor_dvd directory
+# cd to the vendor-dvd directory
 cd -P -- "$(dirname -- "$0")"/..
 
 mkdir -p /run/dvd

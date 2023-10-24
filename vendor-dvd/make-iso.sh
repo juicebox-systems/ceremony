@@ -10,7 +10,7 @@ set -eux
 cd -P -- "$(dirname -- "$0")"
 cwd=$(pwd)
 
-. ../boot_dvd/internal/vars.sh
+. ../boot-dvd/internal/vars.sh
 
 # Define USE_MOCK_INPUTS to build an ISO image from 'tests/inputs' instead.
 if [ -z "${USE_MOCK_INPUTS:-}" ]; then
@@ -24,7 +24,7 @@ find ./${mock}inputs -type f -not -name CACHEDIR.TAG | \
     xargs sha256sum | \
     diff -u ${mock}sha256sum.inputs.txt -
 
-../boot_dvd/internal/make-cache-dir.sh target
+../boot-dvd/internal/make-cache-dir.sh target
 
 # The 'inputs' directory needs to exist for the bind mount below to work in
 # mock mode.

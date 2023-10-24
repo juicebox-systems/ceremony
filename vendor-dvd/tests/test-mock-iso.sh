@@ -6,11 +6,11 @@
 
 set -eux
 
-# cd to the vendor_dvd directory
+# cd to the vendor-dvd directory
 cd -P -- "$(dirname -- "$0")"/..
 cwd=$(pwd)
 
-. ../boot_dvd/internal/vars.sh
+. ../boot-dvd/internal/vars.sh
 
 hexdump -C target/vendor.iso | diff -u tests/iso.txt -
 

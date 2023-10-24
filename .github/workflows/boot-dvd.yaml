@@ -129,24 +129,8 @@ jobs:
           xargs sha256sum | \
           diff -u sha256sum.inputs.txt -
 
-    - name: Restore ISO cache
-      # This is probably temporary but useful for iterating on the remainder of the workflow.
-      uses: actions/cache/restore@v3
-      id: restore-iso-cache
-      with:
-        path: boot-dvd/target/live-build/ceremony-boot-amd64.iso
-        key: iso-${{ runner.os }}-${{ hashFiles('boot-dvd/sha256sum.output.txt') }}
-
     - name: Build ISO
-      if: steps.restore-iso-cache.outputs.cache-hit != 'true'
       run: ./build.sh
-
-    - name: Save ISO cache
-      if: steps.restore-iso-cache.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
-      with:
-        path: boot-dvd/target/live-build/ceremony-boot-amd64.iso
-        key: ${{ steps.restore-iso-cache.outputs.cache-primary-key }}
 
     - name: Dockerize root filesystem
       run: |

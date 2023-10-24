@@ -47,7 +47,7 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles(
             'boot_dvd/sha256sum.inputs-apt.txt',
             'boot_dvd/get-debs.sh',
-            'boot_dvd/internal/make-cache-dir.sh',
+            'boot_dvd/internal/make-cache-dir.sh'
           ) }}
 
     - name: Download apt files
@@ -91,7 +91,7 @@ jobs:
             'boot_dvd/get-crates.sh',
             'boot_dvd/internal/get-crates-inner.sh',
             'boot_dvd/internal/make-cache-dir.sh',
-            'boot_dvd/internal/vars.sh',
+            'boot_dvd/internal/vars.sh'
           ) }}
 
     - name: Package/download code

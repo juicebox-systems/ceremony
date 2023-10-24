@@ -35,6 +35,8 @@ mkdir -p target/live-build
 # use a Docker image built from a similar Debian snapshot as the boot DVD
 # image. It's probably best to use a Docker image built from a snapshot that's
 # about the same time or very slightly older than the 'inputs/apt' cache.
+#
+# The --privileged flag is needed to allow live-build to do its chrooting.
 docker run \
     --init \
     --interactive \

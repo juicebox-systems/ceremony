@@ -147,6 +147,7 @@ jobs:
 
     - name: Dockerize root filesystem
       run: |
+        set -ex
         mkdir target/test-squashfs
         cd target/test-squashfs
         7z x ../live-build/ceremony-boot-amd64.iso live/filesystem.squashfs
@@ -156,10 +157,10 @@ jobs:
 
     - name: Run tool build and tests
       run: |
-        docker run --interactive --rm ceremony-root sh -c \
+        docker run --interactive --net none --rm ceremony-root sh -c \
           'ceremony meta paths && cd /root/ceremony/tool && cargo test'
 
     - name: Run juicebox-hsm-realm build and unit tests
       run: |
-        docker run --interactive --rm ceremony-root sh -c \
+        docker run --interactive --net none --rm ceremony-root sh -c \
           'cd /root/juicebox-hsm-realm && cargo build && cargo test --lib'

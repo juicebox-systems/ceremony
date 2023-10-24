@@ -99,13 +99,7 @@ sudo apt install xorriso
 Then run:
 
 ```sh
-xorriso \
-    -as cdrecord \
-    -v \
-    -eject \
-    -sao \
-    dev=/dev/sr0 \
-    target/live-build/ceremony-boot-amd64.iso
+./burn.sh target/live-build/ceremony-boot-amd64.iso
 ```
 
 Label the disc "Juicebox Ceremony Boot DVD", along with the local date and time

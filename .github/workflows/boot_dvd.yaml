@@ -113,3 +113,6 @@ jobs:
           LC_ALL=C sort | \
           xargs sha256sum | \
           diff -u sha256sum.inputs.txt -
+
+    - name: Build ISO
+      run: ./build.sh

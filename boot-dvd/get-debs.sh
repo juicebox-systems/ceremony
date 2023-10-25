@@ -36,6 +36,11 @@ fetch() {
     echo "Fetching $url"
     echo "to $path"
     mkdir -p "$(dirname "$path")"
+
+    # Download to a temporary file since curl can leave behind partial files on
+    # timeouts or interrupts. The option '--remove-on-error' was added in curl
+    # version 7.83 to address this, but Debian 11 (Bullseye) shipped with 7.74.
+
     if curl \
         --connect-timeout 10 \
         --fail \
@@ -49,7 +54,6 @@ fetch() {
         return 0
     else
         echo
-        # curl can leave behind partial files on timeouts or interrupts
         rm -f "$path.tmp"
         return 1
     fi

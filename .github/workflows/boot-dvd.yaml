@@ -61,9 +61,11 @@ jobs:
           ) }}
 
     - name: Download apt files
-      # This is done unconditionally since it's fast. It doesn't download
-      # anything if the files in 'inputs/apt' exist.
+      # This is done unconditionally since it's fast if cached. It doesn't
+      # download anything if the files in 'inputs/apt' exist.
       run: ./get-debs.sh
+      env:
+        SNAPSHOT_SERVER_ONLY: '1'
 
     - name: Check apt files
       run: |
@@ -106,8 +108,8 @@ jobs:
           ) }}
 
     - name: Package/download code
-      # This is done unconditionally since it's fast. It doesn't download
-      # anything if 'inputs/juicebox-hsm-realm.tar' exists.
+      # This is done unconditionally since it's fast if cached. It doesn't
+      # download anything if 'inputs/juicebox-hsm-realm.tar' exists.
       run: ./get-code.sh
 
     - name: Download crates

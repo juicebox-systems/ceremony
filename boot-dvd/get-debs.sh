@@ -46,7 +46,7 @@ fetch() {
         --fail \
         --max-time 60 \
         --output "$path.tmp" \
-        --retry 5 \
+        --retry 10 \
         --retry-delay 5 \
         "$url"; then
         echo

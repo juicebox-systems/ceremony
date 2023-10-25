@@ -27,7 +27,7 @@ xorriso \
     -indev stdio:/dev/null \
     -outdev target/vendor.iso \
     -charset ISO-8859-1 \
-    -compliance 'clear:iso_9660_level=1:always_gmt' \
+    -compliance 'clear:iso_9660_level=1:always_gmt:no_emul_toc' \
     -disk_pattern off \
     -rockridge off \
     -volid 'VENDOR' \

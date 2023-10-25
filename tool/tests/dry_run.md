@@ -674,7 +674,7 @@ Spawning Process {
         "-charset",
         "ISO-8859-1",
         "-compliance",
-        "clear:iso_9660_level=2:lowercase:7bit_ascii:always_gmt",
+        "clear:iso_9660_level=2:lowercase:7bit_ascii:always_gmt:no_emul_toc",
         "-disk_pattern",
         "off",
         "-rockridge",

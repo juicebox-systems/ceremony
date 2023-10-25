@@ -171,7 +171,7 @@ fn create_iso(output: &str, context: &Context) -> Result<(), Error> {
         // The filenames are checked by a unit test. It allows lowercase and
         // dashes, which the standard prohibits.
         "-compliance",
-        "clear:iso_9660_level=2:lowercase:7bit_ascii:always_gmt",
+        "clear:iso_9660_level=2:lowercase:7bit_ascii:always_gmt:no_emul_toc",
         "-disk_pattern",
         "off",
         "-rockridge",

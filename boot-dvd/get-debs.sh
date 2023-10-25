@@ -3,7 +3,7 @@
 # This script is called from the host to download the Debian packages and
 # indexes, as an input to the image builder.
 #
-# Ideally we'd be able to point the image builder to snapshots.debian.org and
+# Ideally we'd be able to point the image builder to snapshot.debian.org and
 # things would be fast and reproducible. However, as of 2023, that service is
 # slow to access. Requests often time out, and they can allegedly be
 # rate-limited as well. This script creates a local cache of just the files
@@ -13,7 +13,7 @@
 # from deb.debian.org to save time, for the deb files that are still present
 # there. As the snapshot ages, deb.debian.org will have fewer of the
 # snapshotted debs, and eventually the entire Debian release will be archived.
-# This script always pulls the index files from the snapshots.debian.org
+# This script always pulls the index files from the snapshot.debian.org
 # service, which include the expected hashes for the deb files.
 
 set -eu

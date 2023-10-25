@@ -5,6 +5,10 @@ on:
   push:
     branches:
     - main
+  schedule:
+    # Run weekly (04:45 AM UTC on Thursdays) to catch failures based on
+    # external changes.
+    - cron: '45 04 * * 4'
   workflow_dispatch: {}
 
 jobs:

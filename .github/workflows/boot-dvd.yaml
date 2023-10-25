@@ -5,6 +5,12 @@ on:
   push:
     branches:
     - main
+  schedule:
+    # Run daily (02:09 AM UTC), without caches, to catch issues with gathering
+    # inputs, reproducibility, or other external changes.
+    #
+    # TODO: Change this to be less frequent once we have more confidence in it.
+    - cron: '09 02 * * *'
   workflow_dispatch: {}
 
 jobs:
@@ -43,6 +49,7 @@ jobs:
         grep -E '  \./inputs/rust-.*\.tar\.xz$' sha256sum.inputs.txt > sha256sum.inputs-rust.txt
 
     - name: Restore apt cache
+      if: github.event_name != 'schedule'
       uses: actions/cache/restore@v3
       id: restore-apt-cache
       with:
@@ -81,6 +88,7 @@ jobs:
           diff -u sha256sum.inputs-rust.txt -
 
     - name: Restore code/crates cache
+      if: github.event_name != 'schedule'
       uses: actions/cache/restore@v3
       id: restore-code-cache
       with:

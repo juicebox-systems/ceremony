@@ -1,1 +1,1 @@
-6aadcad2ea2e2412bbdf92631bdbb8c87fd4aace6dc998d48139a4049d5eccb7  ./target/live-build/ceremony-boot-amd64.iso
+9bb428a50cfa97422c903885bfa42e769ec3f61b1f29af32cd892a2ce7fd5239  ./target/live-build/ceremony-boot-amd64.iso

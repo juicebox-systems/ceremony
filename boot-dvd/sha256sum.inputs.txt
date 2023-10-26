@@ -307,7 +307,7 @@ d4b7736e58512a2b047f9cb91b71db5a3cf9d3451192fc6da044c77bf51fe869  ./inputs/apt/d
 5ef7e6c1cd6b165455466bbfa6c22d8f5b61109d29aeab906bd3406322f34b15  ./inputs/apt/debian/pool/main/x/xz-utils/xz-utils_5.4.1-0.2_amd64.deb
 6221ca25ad5abcfbe1965801029d85a88b4775320384b4b716de8fab7a4d2f7a  ./inputs/apt/debian/pool/main/z/z3/libz3-4_4.8.12-3.1_amd64.deb
 d7dd1d1411fedf27f5e27650a6eff20ef294077b568f4c8c5e51466dc7c08ce4  ./inputs/apt/debian/pool/main/z/zlib/zlib1g_1.2.13.dfsg-1_amd64.deb
-e4be97b0094c086ddd9729231675d82b207d1bc062b65e0acc5c618182ff5bd3  ./inputs/ceremony-tool.tar
+98750423c55b9a35daa6d57900dae5bbd0dea4b8b742aa79689e2b127fbdf105  ./inputs/ceremony-tool.tar
 8a30b2e23b9e17a9f90641c7ab1549cd9b44f296d3ccbf309d2863cfe398a0cb  ./inputs/crates/addr2line-0.21.0.crate
 f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe  ./inputs/crates/adler-1.0.2.crate
 d122413f284cf2d62fb1b7db97e02edb8cda96d769b16e443a4f6195e35662b0  ./inputs/crates/aead-0.5.2.crate

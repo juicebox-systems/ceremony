@@ -32,8 +32,8 @@ pub struct Paths {
     /// file may not exist yet.
     pub entrust_init: String,
 
-    /// The path to the latest Solo XC firmare file, once the vendor's firmware
-    /// `.iso.zip` is extracted and mounted.
+    /// The path to the latest Solo XC firmware file, once the vendor's
+    /// firmware `.iso.zip` is extracted and mounted.
     pub firmware_file: String,
 
     /// The path to the `juicebox-hsm-realm` source code directory.

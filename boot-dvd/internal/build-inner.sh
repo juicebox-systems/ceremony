@@ -141,7 +141,7 @@ lb config \
 
 # Now we copy and modify files inside `config`. Some of these configure the
 # build, some are executed during the build, and some are copied into the
-# resulting image. The following are storted by their intermediate destination
+# resulting image. The following are sorted by their intermediate destination
 # path.
 
 # The Rust installation copies a file to /usr/local/lib/libLLVM-*.so that

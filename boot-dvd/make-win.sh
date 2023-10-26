@@ -7,7 +7,7 @@
 # This requires p7zip-full and ntfs-3g to be installed but does not require
 # root.
 #
-# It needs 'target/live-build/cermony-boot-amd64.iso' and
+# It needs 'target/live-build/ceremony-boot-amd64.iso' and
 # '../vendor-dvd/inputs/'.
 #
 # It produces 'target/win/pseudo-win.img', which is a file containing an NTFS

@@ -62,6 +62,7 @@ cargo local-registry \
     --sync $RUST_SRC_DIR/library/sysroot/Cargo.lock \
     cargo-registry
 
+chown -R "$HOST_USER" cargo-registry
 find ../../inputs/crates -mindepth 1 -delete
 find cargo-registry -mindepth 1 -maxdepth 1 -exec mv {} ../../inputs/crates \;
 find . -mindepth 1 -delete

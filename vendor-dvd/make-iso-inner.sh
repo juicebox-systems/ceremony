@@ -34,3 +34,5 @@ xorriso \
     -map inputs/Codesafe_Lin64-13.4.3.iso.zip CODESAFE.ZIP \
     -map inputs/SecWorld_Lin64-13.4.4.iso.zip SECWORLD.ZIP \
     -map inputs/nShield_HSM_Firmware-13.4.4.iso.zip FIRMWARE.ZIP
+
+chown "$HOST_USER" target/vendor.iso

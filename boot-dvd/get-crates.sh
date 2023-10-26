@@ -18,6 +18,7 @@ internal/make-cache-dir.sh target
 mkdir -p inputs/crates target/crates
 
 docker run \
+    --env HOST_USER="$(id -u):$(id -g)" \
     --init \
     --interactive \
     --rm \

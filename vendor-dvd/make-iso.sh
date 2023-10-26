@@ -33,6 +33,7 @@ mkdir -p inputs
 rm -f target/vendor.iso
 
 docker run \
+    --env HOST_USER="$(id -u):$(id -g)" \
     --init \
     --interactive \
     --rm \

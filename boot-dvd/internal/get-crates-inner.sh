@@ -25,14 +25,13 @@ apt install --no-install-recommends --yes \
     libc6-dev \
     libssl-dev \
     pkg-config \
-    pv \
     xz-utils
 
 mkdir -p target/crates
 cd target/crates
 find . -mindepth 1 -delete
 
-pv ../../inputs/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.xz | tar --extract --xz
+tar -xf ../../inputs/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.xz
 rust-$RUST_VERSION-x86_64-unknown-linux-gnu/install.sh \
     --components=cargo,rustc,rust-std-x86_64-unknown-linux-gnu
 

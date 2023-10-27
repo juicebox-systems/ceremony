@@ -45,7 +45,7 @@ else
     git init --initial-branch=main
     # TODO: replace with anonymous https://github.com/juicebox-systems/juicebox-hsm-realm.git
     git remote add origin git@github.com:juicebox-systems/juicebox-hsm-realm.git
-    git fetch --depth 1 origin '0cf915f84dd376e8ec024779e8c0c31197bdec28'
+    git fetch --depth 1 origin 'd09bef2b36199d22877908ec702b047352c26256'
     git checkout FETCH_HEAD
     git submodule update --init --depth 1 --single-branch -- \
         ciborium gcp_auth sdk

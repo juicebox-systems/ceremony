@@ -14,7 +14,7 @@ ceremony_dir=$(pwd)
 
 . ./internal/vars.sh
 
-# Quiet down complains from debconf about `dialog` being unavailable.
+# Quiet down complaints from debconf about `dialog` being unavailable.
 export DEBIAN_FRONTEND=noninteractive
 
 # Set fake timestamps in the image for reproducibility.

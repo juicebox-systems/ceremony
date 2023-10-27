@@ -1,0 +1,15 @@
+.
+./codesafe.zip
+./firmware.zip
+./secworld.zip
+cbff157222b116dc72378e2056b53ba6ee233cb6a4efb00eae6be6aa28847493  codesafe.zip
+829a372ec518455b33d0662bb067d6f6fab9220d54d258f5ff473e432ae0fa0d  firmware.zip
+371b00db7c3b737e53583a329e0c5bbab6823dba8da4320cf9ec277a0f25f22d  secworld.zip
+==> codesafe.zip <==
+mock-codesafe
+
+==> firmware.zip <==
+mock-firmware
+
+==> secworld.zip <==
+mock-secworld

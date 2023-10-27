@@ -1,0 +1,163 @@
+name: Boot DVD CI
+
+on:
+  pull_request: {}
+  push:
+    branches:
+    - main
+  schedule:
+    # Run daily (02:09 AM UTC), without caches, to catch issues with gathering
+    # inputs, reproducibility, or other external changes.
+    #
+    # TODO: Change this to be less frequent once we have more confidence in it.
+    - cron: '09 02 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  main:
+    name: Build
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: boot-dvd
+
+    steps:
+    - name: Check out sources
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+
+    - name: Set up Git
+      run: |
+        # Configures the global `git` CLI to be able to access private repos.
+        git config --global url.'https://github.com/'.insteadOf 'git@github.com:'
+        # Copy the encoded auth token from local config that actions/checkout configured.
+        git config --global http.'https://github.com/'.extraHeader "$(git config --local http.'https://github.com/'.extraHeader)"
+
+    - name: Run shellcheck
+      run: |
+        shellcheck --version
+        shellcheck *.sh internal/*.sh
+
+    - name: Check entrust.ps1 hashes
+      run: ./check-entrust-ps1-hashes.py
+
+    - name: Split inputs hashes
+      run: |
+        grep -E '  \./inputs/apt/' sha256sum.inputs.txt > sha256sum.inputs-apt.txt
+        grep -E '  \./inputs/(crates/|juicebox-hsm-realm\.tar$)' sha256sum.inputs.txt > sha256sum.inputs-code.txt
+        grep -E '  \./inputs/rust-.*\.tar\.xz$' sha256sum.inputs.txt > sha256sum.inputs-rust.txt
+
+    - name: Restore apt cache
+      if: github.event_name != 'schedule'
+      uses: actions/cache/restore@v3
+      id: restore-apt-cache
+      with:
+        path: boot-dvd/inputs/apt
+        key: apt-${{ runner.os }}-${{ hashFiles(
+            'boot-dvd/sha256sum.inputs-apt.txt',
+            'boot-dvd/get-debs.sh',
+            'boot-dvd/internal/make-cache-dir.sh'
+          ) }}
+
+    - name: Download apt files
+      # This is done unconditionally since it's fast if cached. It doesn't
+      # download anything if the files in 'inputs/apt' exist.
+      run: ./get-debs.sh
+      env:
+        SNAPSHOT_SERVER_ONLY: '1'
+
+    - name: Check apt files
+      run: |
+        find ./inputs/apt -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs-apt.txt -
+
+    - name: Save apt cache
+      if: steps.restore-apt-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: boot-dvd/inputs/apt
+        key: ${{ steps.restore-apt-cache.outputs.cache-primary-key }}
+
+    - name: Download Rust
+      run: ./get-rust.sh
+
+    - name: Check Rust downloads
+      run: |
+        sha256sum ./inputs/rust-*-linux-*.tar.xz ./inputs/rust-src-*.tar.xz | \
+          diff -u sha256sum.inputs-rust.txt -
+
+    - name: Restore code/crates cache
+      if: github.event_name != 'schedule'
+      uses: actions/cache/restore@v3
+      id: restore-code-cache
+      with:
+        path: |
+          boot-dvd/inputs/crates/
+          boot-dvd/inputs/juicebox-hsm-realm.tar
+        key: code-${{ runner.os }}-${{ hashFiles(
+            'boot-dvd/sha256sum.inputs-code.txt',
+            'boot-dvd/sha256sum.inputs-rust.txt',
+            'boot-dvd/get-code.sh',
+            'boot-dvd/get-crates.sh',
+            'boot-dvd/internal/get-crates-inner.sh',
+            'boot-dvd/internal/make-cache-dir.sh',
+            'boot-dvd/internal/vars.sh'
+          ) }}
+
+    - name: Package/download code
+      # This is done unconditionally since it's fast if cached. It doesn't
+      # download anything if 'inputs/juicebox-hsm-realm.tar' exists.
+      run: ./get-code.sh
+
+    - name: Download crates
+      if: steps.restore-code-cache.outputs.cache-hit != 'true'
+      run: ./get-crates.sh
+
+    - name: Check code/crates inputs
+      run: |
+        find ./inputs/crates ./inputs/juicebox-hsm-realm.tar -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs-code.txt -
+
+    - name: Save code/crates cache
+      if: steps.restore-code-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          boot-dvd/inputs/crates/
+          boot-dvd/inputs/juicebox-hsm-realm.tar
+        key: ${{ steps.restore-code-cache.outputs.cache-primary-key }}
+
+    - name: Check all inputs
+      run: |
+        find ./inputs -type f | \
+          LC_ALL=C sort | \
+          xargs sha256sum | \
+          diff -u sha256sum.inputs.txt -
+
+    - name: Build ISO
+      run: ./build.sh
+
+    - name: Dockerize root filesystem
+      run: |
+        set -ex
+        mkdir target/test-squashfs
+        cd target/test-squashfs
+        7z x ../live-build/ceremony-boot-amd64.iso live/filesystem.squashfs
+        sudo unsquashfs live/filesystem.squashfs
+        cd squashfs-root
+        sudo tar -c . | docker import - ceremony-root
+
+    - name: Run tool build and tests
+      run: |
+        docker run --interactive --net none --rm ceremony-root sh -c \
+          'ceremony meta paths && cd /root/ceremony/tool && cargo test'
+
+    - name: Run juicebox-hsm-realm build and unit tests
+      run: |
+        docker run --interactive --net none --rm ceremony-root sh -c \
+          'cd /root/juicebox-hsm-realm && cargo build && cargo test --lib'

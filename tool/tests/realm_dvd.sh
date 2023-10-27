@@ -17,6 +17,7 @@ mkdir -p target/realm_dvd
 
 # privileged to be able to mount the ISO
 docker run \
+    --env HOST_USER="$(id -u):$(id -g)" \
     --privileged \
     --rm \
     --volume "$cwd/target/debug/ceremony:/usr/local/bin/ceremony:ro" \

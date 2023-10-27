@@ -40,7 +40,7 @@ jobs:
         shellcheck *.sh internal/*.sh
 
     - name: Check entrust.ps1 hashes
-      run: ./check-entrust-ps1-hashes.sh
+      run: ./check-entrust-ps1-hashes.py
 
     - name: Split inputs hashes
       run: |

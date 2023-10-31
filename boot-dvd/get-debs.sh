@@ -37,26 +37,37 @@ fetch() {
     echo "to $path"
     mkdir -p "$(dirname "$path")"
 
+    # The download attempts fail often with snapshot.debian.org. Retry the
+    # download in shell, since curl's '--retry' loop (as of version 7.81.0)
+    # occasionally gives up early when there are still retries remaining.
+    #
     # Download to a temporary file since curl can leave behind partial files on
     # timeouts or interrupts. The option '--remove-on-error' was added in curl
     # version 7.83 to address this, but Debian 11 (Bullseye) shipped with 7.74.
 
-    if curl \
-        --connect-timeout 10 \
-        --fail \
-        --max-time 60 \
-        --output "$path.tmp" \
-        --retry 10 \
-        --retry-delay 5 \
-        "$url"; then
-        echo
-        mv "$path.tmp" "$path"
-        return 0
-    else
-        echo
-        rm -f "$path.tmp"
-        return 1
-    fi
+    attempt=1
+    while [ $attempt -le 10 ]; do
+        if [ $attempt -gt 1 ]; then
+            echo "Waiting 5 seconds..."
+            sleep 5
+            echo
+            echo "Starting try $attempt of 10"
+        fi
+        if curl \
+            --connect-timeout 10 \
+            --fail \
+            --max-time 60 \
+            --output "$path.tmp" \
+            "$url"; then
+            echo
+            mv "$path.tmp" "$path"
+            return 0
+        fi
+        attempt=$((attempt + 1))
+    done
+    rm -f "$path.tmp"
+    echo "ERROR: Retries exhausted. Giving up"
+    return 1
 }
 
 DEBIAN_ROLLING='https://deb.debian.org/debian'

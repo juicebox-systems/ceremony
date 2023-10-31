@@ -48,7 +48,7 @@ fetch() {
     attempt=1
     while [ $attempt -le 10 ]; do
         if [ $attempt -gt 1 ]; then
-            echo "Waiting 5 seconds..."
+            echo 'Waiting 5 seconds...'
             sleep 5
             echo
             echo "Starting try $attempt of 10"
@@ -66,7 +66,7 @@ fetch() {
         attempt=$((attempt + 1))
     done
     rm -f "$path.tmp"
-    echo "ERROR: Retries exhausted. Giving up"
+    echo 'ERROR: Retries exhausted. Giving up'
     return 1
 }
 

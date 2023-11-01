@@ -23,6 +23,37 @@ cd -P -- "$(dirname -- "$0")"
 
 internal/make-cache-dir.sh inputs
 
+# Used as an optimization when accessing reliable mirrors. The return status
+# does not reflect failures.
+try_fetch() {
+    if [ -z "$3" ]; then
+        return 0
+    fi
+    path="inputs/apt/$1/$3"
+    if [ -f "$path" ]; then
+        return 0
+    fi
+    url="$2/$3"
+
+    echo "Fetching $url"
+    echo "to $path"
+    mkdir -p "$(dirname "$path")"
+
+    if curl \
+        --connect-timeout 10 \
+        --fail \
+        --max-time 60 \
+        --output "$path.tmp" \
+        "$url"; then
+        echo
+        mv "$path.tmp" "$path"
+    else
+        echo
+        rm -f "$path.tmp"
+    fi
+}
+
+# Used when accessing snapshot.debian.org. The return status reflects failures.
 fetch() {
     if [ -z "$3" ]; then
         return 0
@@ -105,7 +136,7 @@ while read -r p; do
     # https://www.shellcheck.net/wiki/SC2310). If the first fetch succeeds, the
     # second fetch will see the file exists and return quickly.
     if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        fetch debian "$DEBIAN_ROLLING" "$p"
+        try_fetch debian "$DEBIAN_ROLLING" "$p"
     fi
     fetch debian "$DEBIAN_SNAPSHOT" "$p"
 done <<'END'
@@ -407,7 +438,7 @@ END
 # Get the debian-security packages.
 while read -r p; do
     if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        fetch debian-security "$DEBIAN_SECURITY_ROLLING" "$p"
+        try_fetch debian-security "$DEBIAN_SECURITY_ROLLING" "$p"
     fi
     fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" "$p"
 done <<'END'

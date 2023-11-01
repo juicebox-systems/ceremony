@@ -45,13 +45,14 @@ fetch() {
     # timeouts or interrupts. The option '--remove-on-error' was added in curl
     # version 7.83 to address this, but Debian 11 (Bullseye) shipped with 7.74.
 
+    max_attempts=10
     attempt=1
-    while [ $attempt -le 10 ]; do
+    while [ $attempt -le $max_attempts ]; do
         if [ $attempt -gt 1 ]; then
             echo 'Waiting 5 seconds...'
             sleep 5
             echo
-            echo "Starting try $attempt of 10"
+            echo "Starting try $attempt of $max_attempts"
         fi
         if curl \
             --connect-timeout 10 \

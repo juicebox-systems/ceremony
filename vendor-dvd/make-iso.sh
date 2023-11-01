@@ -32,8 +32,11 @@ mkdir -p inputs
 
 rm -f target/vendor.iso
 
+uid=$(id -u)
+gid=$(id -g)
+
 docker run \
-    --env HOST_USER="$(id -u):$(id -g)" \
+    --env HOST_USER="$uid:$gid" \
     --init \
     --interactive \
     --rm \

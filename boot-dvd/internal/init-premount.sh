@@ -31,7 +31,8 @@ if [ ${#expected} -ne 64 ]; then
     panic "Couldn't find hash of filesystem.squashfs in the DVD's sha256sum.txt"
     exit 1
 fi
-echo "Looking for C:\Users\defaultuser0\filesystem.squashfs with hash $expected"
+# shellcheck disable=SC2028
+echo 'Looking for C:\Users\defaultuser0\filesystem.squashfs with hash '"$expected"
 
 mkdir /run/win
 # The /dev/sda path is used for KVM/QEMU testing with a "pseudo-Windows"
@@ -45,7 +46,8 @@ mount -t ntfs-3g -o ro /dev/nvme0n1p3 /run/win || \
 actual=$(sha256sum /run/win/Users/defaultuser0/filesystem.squashfs | cut -f1 -d' ')
 
 if [ "$actual" = "$expected" ]; then
-    echo "Found C:\Users\defaultuser0\filesystem.squashfs with correct hash"
+    # shellcheck disable=SC2028
+    echo 'Found C:\Users\defaultuser0\filesystem.squashfs with correct hash'
     mkdir -p /etc/live/boot
     cat > /etc/live/boot/wincache <<'END'
 PLAIN_ROOT=true

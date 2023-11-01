@@ -100,11 +100,14 @@ fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" dists/bookworm-security/main/b
 
 # Get the debian (not debian-security) packages.
 while read -r p; do
-    if [ -n "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        false
-    else
+    # Note: Be careful not to put function calls in conditional statements,
+    # since then "set -e" won't apply to the function body (see
+    # https://www.shellcheck.net/wiki/SC2310). If the first fetch succeeds, the
+    # second fetch will see the file exists and return quickly.
+    if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
         fetch debian "$DEBIAN_ROLLING" "$p"
-    fi || fetch debian "$DEBIAN_SNAPSHOT" "$p"
+    fi
+    fetch debian "$DEBIAN_SNAPSHOT" "$p"
 done <<'END'
 pool/main/a/acl/libacl1_2.3.1-3_amd64.deb
 pool/main/a/adduser/adduser_3.134_all.deb
@@ -403,11 +406,10 @@ END
 
 # Get the debian-security packages.
 while read -r p; do
-    if [ -n "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        false
-    else
+    if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
         fetch debian-security "$DEBIAN_SECURITY_ROLLING" "$p"
-    fi || fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" "$p"
+    fi
+    fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" "$p"
 done <<'END'
 pool/updates/main/c/curl/libcurl3-gnutls_7.88.1-10+deb12u1_amd64.deb
 pool/updates/main/l/linux-signed-amd64/linux-headers-amd64_6.1.52-1_amd64.deb

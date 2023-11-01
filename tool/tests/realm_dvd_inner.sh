@@ -18,7 +18,8 @@ echo userdata > /root/juicebox-hsm-realm/target/powerpc-unknown-linux-gnu/releas
 mkdir -p /root/juicebox-hsm-realm/target/release
 echo init > /root/juicebox-hsm-realm/target/release/entrust_init
 
-SOURCE_DATE_EPOCH=$(date -u -d 2023-01-01 +'%s') ceremony realm-dvd create-iso
+epoch=$(date -u -d 2023-01-01 +'%s')
+SOURCE_DATE_EPOCH=$epoch ceremony realm-dvd create-iso
 
 chown "$HOST_USER" /root/realm.iso
 cp -av /root/realm.iso /output/

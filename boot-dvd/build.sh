@@ -10,7 +10,6 @@ set -eux
 
 # cd to this directory
 cd -P -- "$(dirname -- "$0")"
-cwd=$(pwd)
 
 . ./internal/vars.sh
 
@@ -43,8 +42,8 @@ docker run \
     --net none \
     --privileged \
     --rm \
-    --volume "$cwd:/ceremony:ro" \
-    --volume "$cwd/target/live-build:/ceremony/target/live-build" \
+    --volume "$PWD:/ceremony:ro" \
+    --volume "$PWD/target/live-build:/ceremony/target/live-build" \
     debian/snapshot:$DEBIAN_CODENAME-20230919 \
     /ceremony/internal/build-inner.sh
 

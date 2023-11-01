@@ -8,7 +8,6 @@ set -eux
 
 # cd to the vendor-dvd directory
 cd -P -- "$(dirname -- "$0")"/..
-cwd=$(pwd)
 
 . ../boot-dvd/internal/vars.sh
 
@@ -19,8 +18,8 @@ docker run \
     --interactive \
     --privileged \
     --rm \
-    --volume "$cwd:/ceremony:ro" \
-    --volume "$cwd/target:/ceremony/target" \
-    --volume "$cwd/target/vendor.iso:/ceremony/target/vendor.iso:ro" \
+    --volume "$PWD:/ceremony:ro" \
+    --volume "$PWD/target:/ceremony/target" \
+    --volume "$PWD/target/vendor.iso:/ceremony/target/vendor.iso:ro" \
     debian:$DEBIAN_CODENAME \
     /ceremony/tests/test-mock-iso-inner.sh

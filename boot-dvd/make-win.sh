@@ -55,4 +55,4 @@ cp -a ../../../vendor-dvd/inputs/nShield_HSM_Firmware-13.4.4.iso.zip \
 
 umount mnt
 
-echo "Created $(pwd)/pseudo-win.img"
+echo "Created $PWD/pseudo-win.img"

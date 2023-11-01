@@ -23,6 +23,37 @@ cd -P -- "$(dirname -- "$0")"
 
 internal/make-cache-dir.sh inputs
 
+# Used as an optimization when accessing reliable mirrors. The return status
+# does not reflect failures.
+try_fetch() {
+    if [ -z "$3" ]; then
+        return 0
+    fi
+    path="inputs/apt/$1/$3"
+    if [ -f "$path" ]; then
+        return 0
+    fi
+    url="$2/$3"
+
+    echo "Fetching $url"
+    echo "to $path"
+    mkdir -p "$(dirname "$path")"
+
+    if curl \
+        --connect-timeout 10 \
+        --fail \
+        --max-time 60 \
+        --output "$path.tmp" \
+        "$url"; then
+        echo
+        mv "$path.tmp" "$path"
+    else
+        echo
+        rm -f "$path.tmp"
+    fi
+}
+
+# Used when accessing snapshot.debian.org. The return status reflects failures.
 fetch() {
     if [ -z "$3" ]; then
         return 0
@@ -37,26 +68,38 @@ fetch() {
     echo "to $path"
     mkdir -p "$(dirname "$path")"
 
+    # The download attempts fail often with snapshot.debian.org. Retry the
+    # download in shell, since curl's '--retry' loop (as of version 7.81.0)
+    # occasionally gives up early when there are still retries remaining.
+    #
     # Download to a temporary file since curl can leave behind partial files on
     # timeouts or interrupts. The option '--remove-on-error' was added in curl
     # version 7.83 to address this, but Debian 11 (Bullseye) shipped with 7.74.
 
-    if curl \
-        --connect-timeout 10 \
-        --fail \
-        --max-time 60 \
-        --output "$path.tmp" \
-        --retry 10 \
-        --retry-delay 5 \
-        "$url"; then
-        echo
-        mv "$path.tmp" "$path"
-        return 0
-    else
-        echo
-        rm -f "$path.tmp"
-        return 1
-    fi
+    max_attempts=10
+    attempt=1
+    while [ $attempt -le $max_attempts ]; do
+        if [ $attempt -gt 1 ]; then
+            echo 'Waiting 5 seconds...'
+            sleep 5
+            echo
+            echo "Starting try $attempt of $max_attempts"
+        fi
+        if curl \
+            --connect-timeout 10 \
+            --fail \
+            --max-time 60 \
+            --output "$path.tmp" \
+            "$url"; then
+            echo
+            mv "$path.tmp" "$path"
+            return 0
+        fi
+        attempt=$((attempt + 1))
+    done
+    rm -f "$path.tmp"
+    echo 'ERROR: Retries exhausted. Giving up'
+    return 1
 }
 
 DEBIAN_ROLLING='https://deb.debian.org/debian'
@@ -88,11 +131,14 @@ fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" dists/bookworm-security/main/b
 
 # Get the debian (not debian-security) packages.
 while read -r p; do
-    if [ -n "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        false
-    else
-        fetch debian "$DEBIAN_ROLLING" "$p"
-    fi || fetch debian "$DEBIAN_SNAPSHOT" "$p"
+    # Note: Be careful not to put function calls in conditional statements,
+    # since then "set -e" won't apply to the function body (see
+    # https://www.shellcheck.net/wiki/SC2310). If the first fetch succeeds, the
+    # second fetch will see the file exists and return quickly.
+    if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
+        try_fetch debian "$DEBIAN_ROLLING" "$p"
+    fi
+    fetch debian "$DEBIAN_SNAPSHOT" "$p"
 done <<'END'
 pool/main/a/acl/libacl1_2.3.1-3_amd64.deb
 pool/main/a/adduser/adduser_3.134_all.deb
@@ -391,11 +437,10 @@ END
 
 # Get the debian-security packages.
 while read -r p; do
-    if [ -n "${SNAPSHOT_SERVER_ONLY:-}" ]; then
-        false
-    else
-        fetch debian-security "$DEBIAN_SECURITY_ROLLING" "$p"
-    fi || fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" "$p"
+    if [ -z "${SNAPSHOT_SERVER_ONLY:-}" ]; then
+        try_fetch debian-security "$DEBIAN_SECURITY_ROLLING" "$p"
+    fi
+    fetch debian-security "$DEBIAN_SECURITY_SNAPSHOT" "$p"
 done <<'END'
 pool/updates/main/c/curl/libcurl3-gnutls_7.88.1-10+deb12u1_amd64.deb
 pool/updates/main/l/linux-signed-amd64/linux-headers-amd64_6.1.52-1_amd64.deb

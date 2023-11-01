@@ -10,20 +10,22 @@ set -eux
 
 # cd to this directory
 cd -P -- "$(dirname -- "$0")"
-cwd=$(pwd)
 
 . ./internal/vars.sh
 
 internal/make-cache-dir.sh target
 mkdir -p inputs/crates target/crates
 
+uid=$(id -u)
+gid=$(id -g)
+
 docker run \
-    --env HOST_USER="$(id -u):$(id -g)" \
+    --env HOST_USER="$uid:$gid" \
     --init \
     --interactive \
     --rm \
-    --volume "$cwd:/ceremony:ro" \
-    --volume "$cwd/inputs/crates:/ceremony/inputs/crates" \
-    --volume "$cwd/target/crates:/ceremony/target/crates" \
+    --volume "$PWD:/ceremony:ro" \
+    --volume "$PWD/inputs/crates:/ceremony/inputs/crates" \
+    --volume "$PWD/target/crates:/ceremony/target/crates" \
     debian:$DEBIAN_CODENAME \
     /ceremony/internal/get-crates-inner.sh

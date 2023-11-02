@@ -199,6 +199,10 @@ cp -av ../../internal/run-tool.sh \
     config/includes.chroot/usr/local/bin/ceremony
 
 # Copy various things into /root/ on the squashfs filesystem.
+
+mkdir -p config/includes.chroot/root/
+cp -av ../../internal/bashrc config/includes.chroot/root/.bashrc
+
 mkdir -p config/includes.chroot/root/.cargo
 cat > config/includes.chroot/root/.cargo/config.toml <<'END'
 [source.crates-io]

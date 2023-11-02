@@ -215,10 +215,11 @@ END
 
 cp -av ../../internal/tmux.conf config/includes.chroot/root/.tmux.conf
 
-# Note: the install-rust.sh hook will read and delete some of these files
-# later, including vars.sh.
+# Note: the 'install-rust.sh' hook will read and delete the Rust archives and
+# 'vars.sh' later.
 cp -a \
     ../../inputs/crates \
+    ../../inputs/features \
     ../../inputs/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.xz \
     ../../inputs/rust-src-$RUST_VERSION.tar.xz \
     ../../internal/vars.sh \
@@ -226,8 +227,6 @@ cp -a \
 
 tar -C config/includes.chroot/root/ -xf ../../inputs/ceremony-tool.tar
 tar -C config/includes.chroot/root/ -xf ../../inputs/juicebox-hsm-realm.tar
-
-# TODO: copy in feature certificate files
 
 # Necessary packages to include in the live image. Notes:
 # - bindgen requires libclang.

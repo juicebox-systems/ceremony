@@ -117,7 +117,7 @@ lb config \
     --apt-source-archives false \
     --architecture amd64 \
     --binary-image iso \
-    --bootappend-live 'boot=live username=root hostname=ceremony components=nss-systemd,debconf,hostname,locales,tzdata,keyboard-configuration,util-linux,login,hooks' \
+    --bootappend-live 'boot=live username=root hostname=ceremony timezone=America/Los_Angeles components=nss-systemd,debconf,hostname,locales,tzdata,keyboard-configuration,util-linux,login,hooks' \
     --bootloaders grub-efi \
     --cache false \
     --checksums sha256 \

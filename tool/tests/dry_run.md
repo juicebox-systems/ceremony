@@ -705,6 +705,17 @@ Spawning Process {
     ],
     dir: None,
 }
+Not computing file digest for "/home/ceremony-test/realm.iso" because --dry-run
+File "/home/ceremony-test/realm.iso"
+SHA-256: abaddecafc0ffee1abaddecafc0ffee2abaddecafc0ffee3abaddecafc0ffee4
+as BIP-39 mnemonic:
+    produce humble razor way
+    zoo ignore push rookie
+    slab there zero shed
+    river urge cloud limit
+    year bubble twin rural
+    quit among wine mother
+
 ```
 
 ## `ceremony realm-dvd mount`

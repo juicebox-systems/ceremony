@@ -162,6 +162,15 @@ lb config \
 grep --invert-match --quiet --recursive MKSQUASHFS_OPTIONS config
 echo 'MKSQUASHFS_OPTIONS="-no-sparse"' >> config/binary
 
+# Remove ifupdown. Its systemd services ('networking.service' and
+# 'ifup@.service') won't succeed and delay shutting down.
+cat > config/hooks/normal/6000-no-network.hook.chroot <<'END'
+#!/bin/sh
+set -eux
+apt remove --purge --yes ifupdown
+END
+chmod +x config/hooks/normal/6000-no-network.hook.chroot
+
 # Install Rust in the resulting image.
 cp -av ../../internal/install-rust.sh \
     config/hooks/normal/6000-rust.hook.chroot

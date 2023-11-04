@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # This script is called from the host to download and package source code, as
-# an input to the image builder.
+# an input to the image builder. It also copies in the '../tool' code and
+# the vendor-provided feature activation files from './features'.
 
 set -eux
 
@@ -24,6 +25,11 @@ pack() {
 }
 
 internal/make-cache-dir.sh inputs target
+
+rm -rf inputs/features
+mkdir inputs/features
+cp features/*.txt inputs/features
+
 rm -rf target/code
 mkdir target/code
 cd target/code

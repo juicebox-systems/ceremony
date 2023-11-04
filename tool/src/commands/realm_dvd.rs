@@ -188,7 +188,9 @@ fn create_iso(output: &str, context: &Context) -> Result<(), Error> {
 
     context.remove_file(output)?;
 
-    context.exec(Process::new("xorriso", &args))
+    context.exec(Process::new("xorriso", &args))?;
+
+    context.print_file_digest(output)
 }
 
 fn restore(context: &Context) -> Result<(), Error> {

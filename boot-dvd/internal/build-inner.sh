@@ -117,7 +117,7 @@ lb config \
     --apt-source-archives false \
     --architecture amd64 \
     --binary-image iso \
-    --bootappend-live 'boot=live username=root hostname=ceremony components=nss-systemd,debconf,hostname,locales,tzdata,keyboard-configuration,util-linux,login,hooks' \
+    --bootappend-live 'boot=live username=root hostname=ceremony timezone=America/Los_Angeles components=nss-systemd,debconf,hostname,locales,tzdata,keyboard-configuration,util-linux,login,hooks' \
     --bootloaders grub-efi \
     --cache false \
     --checksums sha256 \
@@ -162,6 +162,15 @@ lb config \
 grep --invert-match --quiet --recursive MKSQUASHFS_OPTIONS config
 echo 'MKSQUASHFS_OPTIONS="-no-sparse"' >> config/binary
 
+# Remove ifupdown. Its systemd services ('networking.service' and
+# 'ifup@.service') won't succeed and delay shutting down.
+cat > config/hooks/normal/6000-no-network.hook.chroot <<'END'
+#!/bin/sh
+set -eux
+apt remove --purge --yes ifupdown
+END
+chmod +x config/hooks/normal/6000-no-network.hook.chroot
+
 # Install Rust in the resulting image.
 cp -av ../../internal/install-rust.sh \
     config/hooks/normal/6000-rust.hook.chroot
@@ -190,6 +199,10 @@ cp -av ../../internal/run-tool.sh \
     config/includes.chroot/usr/local/bin/ceremony
 
 # Copy various things into /root/ on the squashfs filesystem.
+
+mkdir -p config/includes.chroot/root/
+cp -av ../../internal/bashrc config/includes.chroot/root/.bashrc
+
 mkdir -p config/includes.chroot/root/.cargo
 cat > config/includes.chroot/root/.cargo/config.toml <<'END'
 [source.crates-io]
@@ -202,10 +215,11 @@ END
 
 cp -av ../../internal/tmux.conf config/includes.chroot/root/.tmux.conf
 
-# Note: the install-rust.sh hook will read and delete some of these files
-# later, including vars.sh.
+# Note: the 'install-rust.sh' hook will read and delete the Rust archives and
+# 'vars.sh' later.
 cp -a \
     ../../inputs/crates \
+    ../../inputs/features \
     ../../inputs/rust-$RUST_VERSION-x86_64-unknown-linux-gnu.tar.xz \
     ../../inputs/rust-src-$RUST_VERSION.tar.xz \
     ../../internal/vars.sh \
@@ -213,8 +227,6 @@ cp -a \
 
 tar -C config/includes.chroot/root/ -xf ../../inputs/ceremony-tool.tar
 tar -C config/includes.chroot/root/ -xf ../../inputs/juicebox-hsm-realm.tar
-
-# TODO: copy in feature certificate files
 
 # Necessary packages to include in the live image. Notes:
 # - bindgen requires libclang.

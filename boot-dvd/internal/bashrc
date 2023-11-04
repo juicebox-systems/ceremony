@@ -1,0 +1,23 @@
+# Configuration file for bash in the boot DVD.
+
+# shellcheck shell=bash
+
+__prompt_command() {
+    local status=$?
+
+    local reset='\[\e[0m\]'
+    local red='\[\e[1;31m\]'
+    local green='\[\e[1;32m\]'
+    local white='\[\e[1;37m\]' # bolder than normal text
+
+    if [ $status -eq 0 ]; then
+        PS1=
+    else
+        PS1="${red}Command exited with status $status\n"
+    fi
+
+    # 'user@host:/dir# '
+    PS1="$PS1$green\u@\h$white:$green$PWD$white#$reset "
+}
+
+PROMPT_COMMAND='__prompt_command'

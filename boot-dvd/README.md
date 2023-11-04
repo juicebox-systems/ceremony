@@ -68,10 +68,15 @@ kvm \
     -smp 2
 ```
 
-You can drop the `-nic` line to add a virtual network interface, and adjust the
-memory (`-m`) and number of vCPUs (`-smp`) based on available resources. Note
-that some of the ceremony steps require significant memory (since there is no
-writable disk), and the ceremony desktop has 12 GB of RAM.
+You can adjust the memory (`-m`) and number of vCPUs (`-smp`) based on
+available resources. Note that some of the ceremony steps require significant
+memory (since there is no writable disk), and the ceremony desktop has 12 GB of
+RAM.
+
+You can drop the `-nic` line to add a virtual network interface. Run `dhclient`
+in the live image to configure it with DHCP. Update `/etc/apt/sources.list` to
+use `http://deb.debian.org`, and use `apt` to install what you need. Note that
+`ping` doesn't work under QEMU's default network.
 
 Other `kvm` options may be useful:
 

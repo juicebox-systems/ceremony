@@ -37,7 +37,7 @@ jobs:
     - name: Run shellcheck
       run: |
         shellcheck --version
-        shellcheck *.sh internal/*.sh
+        shellcheck *.sh internal/*.sh internal/bashrc
 
     - name: Check entrust.ps1 hashes
       run: ./check-entrust-ps1-hashes.py

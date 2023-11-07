@@ -13,7 +13,7 @@ on:
 
 jobs:
   main:
-    name: Build
+    name: Mock inputs
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -35,3 +35,45 @@ jobs:
 
     - name: Check mock ISO
       run: ./tests/test-mock-iso.sh
+
+  entrust:
+    name: Real inputs
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: vendor-dvd
+
+    steps:
+    - name: Check out sources
+      uses: actions/checkout@v4
+
+    - name: Check if CI passed in prior run
+      uses: actions/cache@v3
+      id: vendor-dvd-passed
+      with:
+        path: passed
+        key: vendor-dvd-passed-${{ runner.os }}-${{ hashFiles('vendor-dvd/**') }}
+
+    - name: Authenticate to Google Cloud
+      if: steps.vendor-dvd-passed.outputs.cache-hit != 'true'
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+    - name: Download inputs from Google Cloud Storage
+      if: steps.vendor-dvd-passed.outputs.cache-hit != 'true'
+      run: |
+        mkdir -p inputs
+        gcloud storage cp \
+          'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/Codesafe_Lin64-13.4.3.iso.zip' \
+          'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/SecWorld_Lin64-13.4.4.iso.zip' \
+          'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/nShield_HSM_Firmware-13.4.4.iso.zip' \
+          inputs/
+
+    - name: Make ISO using real inputs
+      if: steps.vendor-dvd-passed.outputs.cache-hit != 'true'
+      run: ./make-iso.sh
+
+    - name: Make dummy file for cache
+      if: steps.vendor-dvd-passed.outputs.cache-hit != 'true'
+      run: echo 1 > ../passed

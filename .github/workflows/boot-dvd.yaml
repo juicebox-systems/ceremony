@@ -174,8 +174,9 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
 
-      - name: Set Up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      # Try skipping this, since it should be on the runner already:
+      #- name: Set Up Google Cloud SDK
+      #  uses: google-github-actions/setup-gcloud@v1
 
       - name: Download Codesafe from Google Cloud Storage
         run: |

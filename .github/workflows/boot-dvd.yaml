@@ -37,10 +37,10 @@ jobs:
     - name: Run shellcheck
       run: |
         shellcheck --version
-        shellcheck *.sh internal/*.sh internal/bashrc
+        shellcheck *.sh internal/*.sh internal/bashrc tests/*.sh
 
     - name: Check entrust.ps1 hashes
-      run: ./check-entrust-ps1-hashes.py
+      run: ./tests/check-entrust-ps1-hashes.py
 
     - name: Split inputs hashes
       run: |
@@ -143,14 +143,7 @@ jobs:
       run: ./build.sh
 
     - name: Dockerize root filesystem
-      run: |
-        set -ex
-        mkdir target/test-squashfs
-        cd target/test-squashfs
-        7z x ../live-build/ceremony-boot-amd64.iso live/filesystem.squashfs
-        sudo unsquashfs live/filesystem.squashfs
-        cd squashfs-root
-        sudo tar -c . | docker import - ceremony-root
+      run: ./tests/iso-to-docker.sh
 
     - name: Run tool build and tests
       run: |
@@ -161,3 +154,23 @@ jobs:
       run: |
         docker run --interactive --net none --rm ceremony-root sh -c \
           'cd /root/juicebox-hsm-realm && cargo build && cargo test --lib'
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+    - name: Download Codesafe from Google Cloud Storage
+      working-directory: vendor-dvd
+      run: |
+        set -x
+        mkdir -p inputs
+        gcloud storage cp \
+          'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/Codesafe_Lin64-13.4.3.iso.zip' \
+          inputs/
+        grep Codesafe sha256sum.inputs.txt > sha256sum.codesafe.txt
+        sha256sum ./inputs/Codesafe_Lin64-13.4.3.iso.zip | \
+          diff -u sha256sum.codesafe.txt -
+
+    - name: Run tests needing Codesafe
+      run: ./tests/test-codesafe.sh

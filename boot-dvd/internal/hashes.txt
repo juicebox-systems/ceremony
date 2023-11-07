@@ -1,0 +1,5 @@
+entrust_hsm_elf_bip39=urge athlete prevent input ribbon skate chimney damage shock speed turn connect strategy left economy foil oppose taxi crouch pill price olympic repeat warfare
+entrust_hsm_elf_sha256=ef61c6a93a5b91940a01b8c65a23ab179d6cfe518ad39b9bccd0d26aa734adaf
+entrust_init_bip39=artist pencil erode defy leader abuse flat approve dignity bag area absent mobile myself express economy eight welcome dilemma cup essay thunder drastic parrot
+entrust_init_sha256=0d1455321cd7e8025620563e02302d0058e72494323146ff28f89ad4d3c31095
+juicebox_hsm_realm_git_sha1=d09bef2b36199d22877908ec702b047352c26256

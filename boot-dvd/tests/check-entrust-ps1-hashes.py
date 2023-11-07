@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script is meant to run on the host or in CI to verify that
+# This script is runs on the build host or in CI to verify that
 # 'internal/entrust.ps1' agrees with '../vendor-dvd/sha256sum.txt'. It'd be
 # especially easy to forget to update 'entrust.ps1' since it requires manual
 # testing (Windows) and has the hashes in uppercase.
@@ -10,8 +10,8 @@ from pprint import pprint
 import re
 import sys
 
-# cd to this directory
-os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
+# cd to the boot-dvd directory
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])) + "/..")
 
 ps1_hashes = {
     name: hash.lower()

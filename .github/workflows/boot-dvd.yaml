@@ -189,6 +189,8 @@ jobs:
       working-directory: vendor-dvd
       run: |
         set -x
+        pwd
+        mkdir -p inputs
         gcloud --verbosity info storage cp \
           'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/Codesafe_Lin64-13.4.3.iso.zip' \
           inputs/

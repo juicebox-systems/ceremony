@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script is runs on the build host or in CI to verify that
+# This script is run on the build host or in CI to verify that
 # 'internal/entrust.ps1' agrees with '../vendor-dvd/sha256sum.txt'. It'd be
 # especially easy to forget to update 'entrust.ps1' since it requires manual
 # testing (Windows) and has the hashes in uppercase.

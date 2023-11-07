@@ -185,16 +185,13 @@ jobs:
     #  uses: google-github-actions/setup-gcloud@v1
 
     - name: Download Codesafe from Google Cloud Storage
-      shell: bash
       working-directory: vendor-dvd
       run: |
         set -x
-        pwd
         mkdir -p inputs
-        gcloud --verbosity info storage cp \
+        gcloud storage cp \
           'gs://ncipher-nshield-firmware/2023-08 v13.4 codesafe firmware secworld/Codesafe_Lin64-13.4.3.iso.zip' \
           inputs/
-        ls inputs
-        diff -u \
-          <(grep Codesafe sha256sum.inputs.txt) \
-          <(sha256sum ./inputs/Codesafe_Lin64-13.4.3.iso.zip)
+        grep Codesafe sha256sum.inputs.txt > sha256sum.codesafe.txt
+        sha256sum ./inputs/Codesafe_Lin64-13.4.3.iso.zip | \
+          diff -u sha256sum.codesafe.txt -

@@ -170,6 +170,11 @@ jobs:
         working-directory: boot-dvd
 
     steps:
+    - name: Check out sources
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:

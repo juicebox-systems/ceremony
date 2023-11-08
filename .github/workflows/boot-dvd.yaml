@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-22.04
     defaults:
       run:
+        # Note: does not apply to actions.
         working-directory: boot-dvd
 
     steps:

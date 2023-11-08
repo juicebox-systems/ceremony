@@ -1,0 +1,69 @@
+name: Instructions CI
+
+on:
+  pull_request: {}
+  push:
+    branches:
+    - main
+  schedule:
+    # Run weekly (2:49 AM UTC on Tuesdays) to catch failures based on
+    # external changes.
+    - cron: '49 02 * * 2'
+  workflow_dispatch: {}
+
+env:
+  # For PRs, this workflow runs against the PR commit, not the merge of that
+  # with main.
+  COMMIT_HASH: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
+jobs:
+  main:
+    name: Build
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        # Note: does not apply to actions.
+        working-directory: instructions
+
+    steps:
+    - name: Check out sources
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ env.COMMIT_HASH }}
+
+    - name: Check git hash
+      run: |
+        echo "expected: $COMMIT_HASH"
+        actual=$(git rev-parse HEAD)
+        echo "actual:   $actual"
+        [ "$actual" = "$COMMIT_HASH" ]
+
+    - name: Run shellcheck
+      run: shellcheck build.sh
+
+    - name: Check that debug_level=0
+      run: grep -q '^#let debug_level = 0$' debug.typ
+
+    - name: Run build
+      run: |
+        ./build.sh
+        mv ceremony.pdf "ceremony-release-$COMMIT_HASH.pdf"
+
+    - name: Check PDF reproducibility
+      run: |
+        sleep 1
+        ./build.sh
+        cmp ceremony.pdf "ceremony-release-$COMMIT_HASH.pdf"
+
+    - name: Run debug build
+      run: |
+        sed --in-place '/^#let debug_level = 0$/ s/0/1/' debug.typ
+        ./build.sh
+        mv ceremony.pdf "ceremony-debug-$COMMIT_HASH.pdf"
+
+    - name: Upload Actions artifact with PDFs
+      uses: actions/upload-artifact@v3
+      with:
+        name: ceremony-instructions-${{ env.COMMIT_HASH }}
+        path: |
+          instructions/ceremony-*.pdf

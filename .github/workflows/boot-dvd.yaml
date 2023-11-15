@@ -6,11 +6,9 @@ on:
     branches:
     - main
   schedule:
-    # Run daily (02:09 AM UTC), without caches, to catch issues with gathering
-    # inputs, reproducibility, or other external changes.
-    #
-    # TODO: Change this to be less frequent once we have more confidence in it.
-    - cron: '09 02 * * *'
+    # Run weekly (02:09 AM UTC on Tuesdays) without caches, to catch issues
+    # with gathering inputs, reproducibility, or other external changes.
+    - cron: '09 02 * * 2'
   workflow_dispatch: {}
 
 jobs:

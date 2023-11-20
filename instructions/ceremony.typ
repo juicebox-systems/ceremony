@@ -129,7 +129,7 @@ must be used only as prescribed and must be destroyed during the ceremony.
 
 The ceremony will involve setting up a computer, then using the first HSM to
 initialize a "Security World", write to two smartcards, sign the software, and
-create the realm keys. The OCS smartcard will destroyed after it is used to
+create the realm keys. The OCS smartcard will be destroyed after it is used to
 sign the software. The keys reside in encrypted form on the host filesystem
 (protected by keys that reside on the HSMs and smartcards). As that filesystem
 is in volatile memory, the signed software and keys will be burned to a
@@ -235,7 +235,7 @@ need to leave the room at other times, that should be handled as an exception.
 
 #steps(
   step(time: "1m", [
-    Inspect the operator and the enironment.
+    Inspect the operator and the environment.
 
     #checkbox[
       There is a prominent analog clock with a second hand.

@@ -79,17 +79,18 @@
 
   if uefi_setup {(
     step(time: "30s", [
-      Determine the current date and 24-hour time in UTC:
+      Determine the current date and 24-hour time in UTC. This will be used to
+      set the system time.
 
       #radio(
         [Pacific Standard Time (UTC−08:00)],
         [Pacific Daylight Time (UTC−07:00)],
       )
       #blanks(
-        [Local Date (MM/DD/YYYY)],
-        [Local Time (HH:MM)],
-        [UTC Date (MM/DD/YYYY)],
-        [UTC Time (HH:MM)]
+        [Local Date (`MM/DD/YYYY`)],
+        [Local Time (`HH:MM`, from analog clock)],
+        [UTC Date (`MM/DD/YYYY`)],
+        [UTC Time (`HH:MM`)]
       )
     ]),
 
@@ -115,7 +116,9 @@
         ],
         [
           Set the time and date to UTC. Use the arrows and #keys("Enter") to
-          navigate, and #keys("+") and #keys("-") to adjust the time.
+          navigate, and #keys("+") and #keys("-") to adjust the time. Use the
+          time and date calculated in the previous step, adjusted for the
+          minutes that have since passed.
         ],
         [
           Press #keys("Up") repeatedly until highlighting the back arrow, then

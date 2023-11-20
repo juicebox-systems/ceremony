@@ -172,6 +172,15 @@ that is not optional. If the operator is unable to meet the requirements to
 check a checkbox, that's an exception. A circle (#radio_symbol) is used when
 exactly one of multiple mutually exclusive options is required.
 
+The following conventions apply to dates and times hand-written into this
+document, unless instructed or annotated otherwise:
+- Dates and times should reflect the local time zone.
+- Dates should be written as `YYYY-MM-DD`.
+- Times should be written as `HH:MM` (24-hour local time with minute
+  precision).
+- The operator's source of time should be the analog clock visible to all
+  participants.
+
 The ceremony is expected to take about 6 hours. The ceremony instructions
 include one break at #ref_step(<intermission>), about halfway through, allowing
 (and requiring) the participants to leave the room. If any of the participants

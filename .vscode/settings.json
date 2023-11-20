@@ -15,6 +15,7 @@
         "debconf",
         "debootstrap",
         "defaultuser",
+        "emph",
         "hardserver",
         "hexdigit",
         "hexdump",

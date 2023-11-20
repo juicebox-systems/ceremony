@@ -98,10 +98,10 @@ code:
 = Introduction
 
 The purpose of the ceremony is to create cryptographic keys that may only be
-accessed within the trust boundaries of a fixed set of HSMs, and only while
-those HSMs execute a fixed software release. Additionally, the initialization
-process will create a single NVRAM file on each HSM for only the fixed software
-release to read and write.
+accessed within the trust boundaries of a fixed set of _HSMs_ (Hardware
+Security Modules), and only while those HSMs execute a fixed software release.
+Additionally, the initialization process will create a single NVRAM file on
+each HSM for only the fixed software release to read and write.
 
 One of the cryptographic keys to be generated is an asymmetric key pair used
 for encrypted communication with clients. Assuming the private key is indeed
@@ -118,22 +118,23 @@ The ceremony will use a brand new computer that is never connected to a
 network.
 
 The computer's factory Windows OS will be used to verify the hashes of a
-publicly auditable "#boot_dvd", as well as a vendor-proprietary "#vendor_dvd".
-Then, the Linux OS on the #boot_dvd will be used for the main ceremony. See
-@state_appendix for details on the DVDs and state management.
+publicly auditable #emph(boot_dvd), as well as a vendor-proprietary
+#emph(vendor_dvd). Then, the Linux OS on the #boot_dvd will be used for the
+main ceremony. See @state_appendix for details on the DVDs and state
+management.
 
 Each HSM has an external port for a smartcard reader/writer. The HSMs read and
 write secret keys onto smartcards for administrative operations. The ceremony
-will utilize two smartcards, referred to as "ACS" and "OCS". The smartcards
+will utilize two smartcards, referred to as _ACS_ and _OCS_. The smartcards
 must be used only as prescribed and must be destroyed during the ceremony.
 
 The ceremony will involve setting up a computer, then using the first HSM to
-initialize a "Security World", write to two smartcards, sign the software, and
+initialize a _Security World_, write to two smartcards, sign the software, and
 create the realm keys. The OCS smartcard will be destroyed after it is used to
 sign the software. The keys reside in encrypted form on the host filesystem
 (protected by keys that reside on the HSMs and smartcards). As that filesystem
 is in volatile memory, the signed software and keys will be burned to a
-"#realm_dvd" to be accessed later, both during the ceremony and after the
+#emph(realm_dvd) to be accessed later, both during the ceremony and after the
 ceremony to set up the production environment.
 
 After completing the Security World and realm initialization process on the
@@ -146,30 +147,30 @@ be destroyed.
 
 The following roles are defined for participants of the ceremony:
 
- - The MC introduces the event, keeps it moving, and is the final decision
+ - The _MC_ introduces the event, keeps it moving, and is the final decision
    maker for any exceptions, as explained below.
 
- - The Operator executes the steps as instructed in this document. The Operator
-   should be the only person to approach or access the computer, HSMs, and
-   smartcards during the ceremony. The Operator's copy of this document is the
-   official record.
+ - The _operator_ executes the steps as instructed in this document. The
+   operator should be the only person to approach or access the computer, HSMs,
+   and smartcards during the ceremony. The operator's copy of this document is
+   the official record.
 
- - Any number of witnesses observe the ceremony.
+ - Any number of _witnesses_ observe the ceremony.
 
 A small number of other non-participants may also be present for (parts of) the
 ceremony, for example to record video.
 
 If, at any point, the instructions are ambiguous, contain an error, fail to
 instruct the operator in a particular situation, or must be deviated from, the
-operator should write "Exception" in the margin and fill out an "Exception
-Sheet". Several sheets are included at the end of this document
+operator should write "exception" in the margin and fill out an _exception
+sheet_. Several sheets are included at the end of this document
 (@exception_sheet_1 through @exception_sheet_5). The participants may then
 discuss concerns and options, but the MC ultimately decides how to proceed.
 
-In this document, a checkbox (#checkbox_symbol) denotes a confirmation step that
-is not optional. If the operator is unable to meet the requirements to check a
-checkbox, that's an exception. A circle (#radio_symbol) is used when exactly one
-of multiple mutually exclusive options is required.
+In this document, a checkbox (#checkbox_symbol) denotes a confirmation step
+that is not optional. If the operator is unable to meet the requirements to
+check a checkbox, that's an exception. A circle (#radio_symbol) is used when
+exactly one of multiple mutually exclusive options is required.
 
 The ceremony is expected to take about 6 hours. The ceremony instructions
 include one break at #ref_step(<intermission>), about halfway through, allowing
@@ -1273,8 +1274,8 @@ Store the paper copy in a tamper-evident bag.
 = State <state_appendix>
 
 Other than the computer's factory-provided firmware and Windows installation,
-the state entering the ceremony is on the public #boot_dvd (see @boot_dvd) and
-the Entrust-confidential #vendor_dvd (see @vendor_dvd).
+the state entering the ceremony is on the public #emph(boot_dvd) (see
+@boot_dvd) and the Entrust-confidential #emph(vendor_dvd) (see @vendor_dvd).
 
 In @set_up_computer, several files are copied from the DVDs to the NVMe drive,
 to avoid delays from reading DVDs repeatedly during the ceremony. These files
@@ -1299,8 +1300,8 @@ After booting the #boot_dvd, the Windows partition remains mounted (at
 instead of reading the #vendor_dvd.
 
 In @realm_creation, several new files are produced that are burned to a blank
-#realm_dvd (see @realm_dvd). The #realm_dvd is used during the ceremony and
-must be retained to set up the realm's production environment.
+#emph(realm_dvd) (see @realm_dvd). The #realm_dvd is used during the ceremony
+and must be retained to set up the realm's production environment.
 
 The HSMs themselves contain some state initialized during the ceremony. Each
 will contain the `KMSW` key to decrypt the encryption keys found on the
@@ -1377,8 +1378,8 @@ hashes, and we are not authorized to publish these files. See
   sha256: vendor_input_hashes.at("./inputs/Codesafe_Lin64-13.4.3.iso.zip"),
   bytes: "586,472,486",
   [
-    Compiler, libraries, and header files used to build source code to run on the
-    HSM or interface with the HSM
+    Compiler, libraries, and header files used to build source code to run on
+    the HSM or interface with the HSM
   ],
 )
 #vendor_dvd_file(

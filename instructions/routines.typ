@@ -655,6 +655,11 @@
 
       Wait and re-run the command until these conditions are satisfied.
 
+      If the module does not appear at all, check `dmesg` for the error
+      `nfp_open: device ❰...❱ failed to open with error: -5`. Powering the
+      computer off and on should resolve this. While this problem is somewhat
+      anticipated, use an _exception sheet_ the first time it occurs.
+
       #assert_component_loaded("secworld", true)
     ]),
 

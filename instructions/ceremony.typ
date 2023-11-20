@@ -242,6 +242,9 @@ need to leave the room at other times, that should be handled as an exception.
       There is a prominent analog clock with a second hand.
     ]
     #checkbox[
+      The witnesses confirm that the clock is set to the current local time.
+    ]
+    #checkbox[
       There are two outlets available on the wall or a power strip nearby.
     ]
   ]),
@@ -264,13 +267,16 @@ need to leave the room at other times, that should be handled as an exception.
   [1 antistatic wrist strap],
   [1 pair of scissors],
   [1 Phillips screwdriver],
-  [1 rotary tool to sand through smartcards],
+  [1 rotary tool (to sand through smartcards)],
   [1 table number holder (to display smartcards prominently when not in use)],
 
   [2 printouts of this document],
   [1 permanent marker],
   [1 roll of masking tape],
-  [2 blue pens],
+  [
+    // The ProAmpac GCS9012 tamper-evident bags insist on ballpoint pens.
+    2 blue ballpoint pens
+  ],
   [2 bottles of water],
   [2 juice boxes (preferably apple)],
   [
@@ -289,22 +295,27 @@ need to leave the room at other times, that should be handled as an exception.
     // MMF Industries (no direct web presence?):
     // - 2362010N20
     // - 2362011N20
+    //
+    // Diego received a sample of ProAmpac GCS0912 bags and determined that
+    // they are large enough for a smartcard reader and just large enough to
+    // hold a stack of letter-sized sheets of paper.
   ],
 
   [1 pre-burned and finalized #boot_dvd],
   [1 pre-burned and finalized #vendor_dvd],
   [1 sealed spindle of blank DVD-Rs (for the #realm_dvd)],
   [
-    1 #computer_brand #computer_model computer with a DVD burner and keyboard,
-    further sealed by the purchaser with tamper-evident tape
+    1 computer (#computer_brand #computer_model, including a DVD burner and
+    keyboard, with the outer box sealed by the purchaser with tamper-evident
+    tape)
   ],
   [
-    1 VGA video projector, limited to a low resolution (so the text is visible
+    1 VGA video projector (limited to a low resolution so the text is visible
     to all participants)
   ],
   [
     1 sealed pack of 10 Entrust smartcards
-    #v(1in) // layout hack
+    #v(0.3in) // layout hack
   ],
   [At least 5 of the following Entrust HSMs:
 

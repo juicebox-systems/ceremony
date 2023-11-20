@@ -319,9 +319,9 @@
             #factory_checks
           ],
           [
-            *The HSM is in a tamper-evident bag.*
+            *The HSM is in an antistatic bag within a tamper-evident bag.*
 
-            #checkbox[The bag does not appear tampered with.]
+            #checkbox[The tamper-evident bag does not appear tampered with.]
             #smoosh
             #checkbox[
               The serial number and bag ID match an unused HSM listed in
@@ -335,7 +335,8 @@
     )},
 
     step(time: "1m", [
-      Unpack and inspect the HSM. Put away its packaging.
+      Unpack and inspect the HSM. Retain the antistatic bag and put away the
+      other packaging.
 
       #checkbox[The HSM does not appear tampered with.]
 
@@ -812,8 +813,9 @@
   ]),
 
   step(time: "2m", [
-    Remove the HSM from the computer and insert it into a tamper-evident bag
-    (for transport to the production environment).
+    Remove the HSM from the computer. Insert it into an antistatic bag and
+    then insert that into a tamper-evident bag (for transport to the production
+    environment).
 
     #labeled_blank_bag_id
 

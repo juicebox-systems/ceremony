@@ -30,8 +30,8 @@ LENOVO_IP= # fill this in
 pv lenovo-windows-disk.img.zst | ssh -C root@$LENOVO_IP 'zstd --decompress --stdout | dd bs=1M of=/dev/nvme0n1'
 ```
 
-This took about 40 minutes in the past. The `pv` output will appear to stall
-towards the end, while the ceremony computer writes out a bunch of zeros.
+This takes about 30 minutes. The `pv` output will appear to stall towards the
+end of the file, while the ceremony computer writes out a bunch of zeros.
 
 ## Reset the UEFI Settings
 

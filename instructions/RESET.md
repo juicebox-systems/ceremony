@@ -16,7 +16,7 @@ boot DVD. Set up the network, and then run:
 ```sh
 GITHUB_USERNAME= # fill this in
 apt update
-apt install ca-certificates curl iotop openssh-server
+apt install ca-certificates curl iotop openssh-server zstd
 curl https://github.com/$GITHUB_USERNAME.keys > .ssh/authorized_keys
 ip addr # record IP address
 umount /run/win
@@ -27,10 +27,11 @@ On another computer:
 
 ```sh
 LENOVO_IP= # fill this in
-zstd lenovo-windows-disk.img.zst | ssh -C root@$LENOVO_IP 'dd bs=1M of=/dev/nvme0n1'
+pv lenovo-windows-disk.img.zst | ssh -C root@$LENOVO_IP 'zstd --decompress --stdout | dd bs=1M of=/dev/nvme0n1'
 ```
 
-This took about 40 minutes in the past.
+This takes about 30 minutes. The `pv` output will appear to stall towards the
+end of the file, while the ceremony computer writes out a bunch of zeros.
 
 ## Reset the UEFI Settings
 
